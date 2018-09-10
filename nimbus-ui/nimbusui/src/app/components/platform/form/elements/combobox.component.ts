@@ -66,5 +66,7 @@ export class ComboBox extends BaseControl<String> {
     constructor(wcs: WebContentSvc, controlService: ControlSubscribers, cd:ChangeDetectorRef) {
         super(controlService,wcs,cd);
     }
-
+    ngOnInit() {
+        console.log(this.element);
+    }
 }
