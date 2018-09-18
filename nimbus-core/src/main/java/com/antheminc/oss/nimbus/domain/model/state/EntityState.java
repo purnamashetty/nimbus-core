@@ -27,6 +27,8 @@ import java.util.stream.Stream;
 
 import javax.annotation.concurrent.Immutable;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,7 +40,6 @@ import com.antheminc.oss.nimbus.domain.model.config.EntityConfig;
 import com.antheminc.oss.nimbus.domain.model.config.ModelConfig;
 import com.antheminc.oss.nimbus.domain.model.config.ParamConfig;
 import com.antheminc.oss.nimbus.domain.model.config.ParamValue;
-import com.antheminc.oss.nimbus.domain.model.state.EntityState.Param.LabelState;
 import com.antheminc.oss.nimbus.support.pojo.CollectionsTemplate;
 import com.antheminc.oss.nimbus.support.pojo.LockTemplate;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -561,6 +562,9 @@ public interface EntityState<T> {
 		LabelState getDefaultLabel();
 		LabelState getLabel(String localeLanguageTag);
 		
+		StyleState getStyle();
+		void setStyle(StyleState styleState);
+		
 		@Getter @Setter @ToString 
 		public static class LabelState {
 			private String locale; //default en-US
@@ -593,6 +597,36 @@ public interface EntityState<T> {
 			public int hashCode() {
 				String concat = this.locale + this.text;
 				return concat.hashCode();
+			}
+		}
+		
+		@Getter @Setter @ToString 
+		public static class StyleState {
+			
+			private String cssClass;
+			
+			@Override
+			public boolean equals(Object obj) {
+				if(obj == null) {
+					return false;
+				}
+				
+				if (!LabelState.class.isInstance(obj)) {
+					return false;
+				}
+				
+				StyleState rhs = StyleState.class.cast(obj);
+				
+				return new EqualsBuilder()
+						.append(this.cssClass, rhs.cssClass)
+						.isEquals();
+			}
+			
+			@Override
+			public int hashCode() {
+				return new HashCodeBuilder()
+						.append(this.cssClass)
+						.toHashCode();
 			}
 		}
 		
