@@ -1021,13 +1021,11 @@ public class DefaultParamState<T> extends AbstractEntityState<T> implements Para
 
 	@Override
 	public StyleState getStyle() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.styleState.getCurrState();
 	}
 
 	@Override
 	public void setStyle(StyleState styleState) {
-		// TODO Auto-generated method stub
-		
+		this.styleState.setState(styleState);
 	}
 }
