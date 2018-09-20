@@ -1,4 +1,4 @@
-<form id="{{formId}}" [formGroup]="form" novalidate>
+<form id="{{formId}}" [formGroup]="form" novalidate *ngIf="element.visible">
     <nm-label *ngIf="!isLabelEmpty" [element]="element" [size]="labelSize"></nm-label>
 
     <!-- Render form elements -->
