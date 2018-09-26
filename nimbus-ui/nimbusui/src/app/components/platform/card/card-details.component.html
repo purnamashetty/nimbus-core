@@ -4,23 +4,23 @@
         <ng-template [ngIf]="param.config?.uiStyles?.attributes?.alias == componentTypes.cardDetailsHeader.toString()">
           <div class="cardDetailsHeader">
                 <button *ngIf="expandable" attr.aria-expanded="{{!isHidden}}" title="Select to toggle" (click)="toggleState()" class="btn btn-icon toggleTrigger"></button>
-            <span class="{{param.config?.uiStyles?.attributes?.cssClass}}" *ngFor="let field of param?.type?.model?.params">
-                <!-- ButtonGroup -->
-                <ng-template [ngIf]="field.config?.uiStyles?.attributes?.alias == componentTypes.buttonGroup.toString()">
-                    <div class="float-right">
-                        <nm-button-group [buttonList]="field.type?.model?.params" [cssClass]="field.config?.uiStyles?.attributes?.cssClass">
-                        </nm-button-group>
-                    </div>
-                </ng-template>
-                <!-- Paragraph -->
-                <ng-template [ngIf]="field.config?.uiStyles?.attributes?.alias == componentTypes.paragraph.toString()">
-                    <nm-paragraph [element]="field"></nm-paragraph>
-                </ng-template>
-                <!-- FieldValue-->
-                <ng-template [ngIf]="field.config?.uiStyles?.attributes?.alias == componentTypes.fieldValue.toString()">
-                    <nm-card-details-field [element]="field" [(value)]="field.leafState"></nm-card-details-field>
-                </ng-template>
-            </span>
+                <span class="{{param.config?.uiStyles?.attributes?.cssClass}}" *ngFor="let field of param?.type?.model?.params">
+                    <!-- ButtonGroup -->
+                    <ng-template [ngIf]="field.config?.uiStyles?.attributes?.alias == componentTypes.buttonGroup.toString()">
+                        <div class="float-right">
+                            <nm-button-group [buttonList]="field.type?.model?.params" [cssClass]="field.config?.uiStyles?.attributes?.cssClass">
+                            </nm-button-group>
+                        </div>
+                    </ng-template>
+                    <!-- Paragraph -->
+                    <ng-template [ngIf]="field.config?.uiStyles?.attributes?.alias == componentTypes.paragraph.toString()">
+                        <nm-paragraph [element]="field"></nm-paragraph>
+                    </ng-template>
+                    <!-- FieldValue-->
+                    <ng-template [ngIf]="field.config?.uiStyles?.attributes?.alias == componentTypes.fieldValue.toString()">
+                        <nm-card-details-field [element]="field" [(value)]="field.leafState"></nm-card-details-field>
+                    </ng-template>
+                </span>
           </div> 
         </ng-template>
         <ng-template [ngIf]="param.config?.uiStyles?.attributes?.alias == componentTypes.cardDetailsBody.toString()">
