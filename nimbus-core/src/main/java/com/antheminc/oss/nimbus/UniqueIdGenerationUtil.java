@@ -26,6 +26,10 @@ public class UniqueIdGenerationUtil {
 
 	private static final DateTimeFormatter dateformat = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss.SSS");
 	
+	private UniqueIdGenerationUtil() {
+	    throw new IllegalStateException("Cannot instantiate utility class");
+	}
+	
 	public static String generateUniqueId() {
 		LocalDateTime datetime = LocalDateTime.now();
 		

@@ -27,7 +27,7 @@ import com.antheminc.oss.nimbus.support.EnableLoggingInterceptor;
  *
  */
 @EnableLoggingInterceptor
-public class DefaultActionExecutorNav<T> extends AbstractCommandExecutor<String> {
+public class DefaultActionExecutorNav extends AbstractCommandExecutor<String> {
 	
 	public DefaultActionExecutorNav(BeanResolverStrategy beanResolver) {
 		super(beanResolver);

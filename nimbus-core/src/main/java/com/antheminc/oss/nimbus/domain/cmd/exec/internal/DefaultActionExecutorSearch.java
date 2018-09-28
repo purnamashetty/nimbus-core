@@ -28,7 +28,7 @@ import com.antheminc.oss.nimbus.support.EnableLoggingInterceptor;
  *
  */
 @EnableLoggingInterceptor
-public class DefaultActionExecutorSearch<R> extends AbstractCommandExecutor<R> {
+public class DefaultActionExecutorSearch extends AbstractCommandExecutor<Object> {
 	
 	private FunctionExecutor<?, ?> functionExecutor;
 	
@@ -39,8 +39,8 @@ public class DefaultActionExecutorSearch<R> extends AbstractCommandExecutor<R> {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	protected Output<R> executeInternal(Input input) {
-		return (Output<R>)functionExecutor.execute(input);
+	protected Output<Object> executeInternal(Input input) {
+		return (Output<Object>)functionExecutor.execute(input);
 	}
 
 }

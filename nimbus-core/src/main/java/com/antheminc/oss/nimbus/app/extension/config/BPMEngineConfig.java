@@ -163,13 +163,12 @@ public class BPMEngineConfig extends AbstractProcessEngineAutoConfiguration {
      *
      * @param engineConfiguration
      */
-    protected void addCustomDeployers(SpringProcessEngineConfiguration engineConfiguration) throws Exception{
+    protected void addCustomDeployers(SpringProcessEngineConfiguration engineConfiguration) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
     	List<Deployer> deployers = new ArrayList<>();
-        //deployers.add(new RulesDeployer());
         if(customDeployers != null){
         	for(String customDeployerClass: customDeployers){
         		Class<?> clazz = Class.forName(customDeployerClass);
-        		deployers.add((Deployer)clazz.newInstance());        		
+				deployers.add((Deployer)clazz.newInstance());     		
         	}
         }
         engineConfiguration.setCustomPostDeployers(deployers);    	
@@ -178,7 +177,6 @@ public class BPMEngineConfig extends AbstractProcessEngineAutoConfiguration {
     protected Resource[] loadBPMResources() throws IOException{ 
     		List<Resource> bpmResources = new ArrayList<Resource>();
     		addBPMResources(bpmResources,definitions);
-    		//==addBPMResources(bpmResources,rules);
   		return bpmResources.toArray(new Resource[bpmResources.size()]);
 	}
     
@@ -203,6 +201,7 @@ public class BPMEngineConfig extends AbstractProcessEngineAutoConfiguration {
     }
     
    
+    @Override
     @Bean
     public TaskExecutor taskExecutor() {
         return new SimpleAsyncTaskExecutor();

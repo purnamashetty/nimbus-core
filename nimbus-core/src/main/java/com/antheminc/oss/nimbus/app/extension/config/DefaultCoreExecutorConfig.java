@@ -21,14 +21,12 @@ import org.springframework.core.env.PropertyResolver;
 
 import com.antheminc.oss.nimbus.context.BeanResolverStrategy;
 import com.antheminc.oss.nimbus.domain.cmd.CommandMessageConverter;
-import com.antheminc.oss.nimbus.domain.cmd.exec.CommandExecutor;
 import com.antheminc.oss.nimbus.domain.cmd.exec.CommandPathVariableResolver;
 import com.antheminc.oss.nimbus.domain.cmd.exec.CommandTransactionInterceptor;
 import com.antheminc.oss.nimbus.domain.cmd.exec.ExecutionContextLoader;
 import com.antheminc.oss.nimbus.domain.cmd.exec.ExecutionContextPathVariableResolver;
 import com.antheminc.oss.nimbus.domain.cmd.exec.internal.DefaultActionExecutorConfig;
 import com.antheminc.oss.nimbus.domain.cmd.exec.internal.DefaultActionExecutorDelete;
-import com.antheminc.oss.nimbus.domain.cmd.exec.internal.FunctionExecutor;
 import com.antheminc.oss.nimbus.domain.cmd.exec.internal.DefaultActionExecutorGet;
 import com.antheminc.oss.nimbus.domain.cmd.exec.internal.DefaultActionExecutorNav;
 import com.antheminc.oss.nimbus.domain.cmd.exec.internal.DefaultActionExecutorNew;
@@ -87,47 +85,47 @@ public class DefaultCoreExecutorConfig {
 	}
 	
 	@Bean(name="default._new$execute")
-	public CommandExecutor<?> defaultActionExecutorNew(BeanResolverStrategy beanResolver){
+	public DefaultActionExecutorNew defaultActionExecutorNew(BeanResolverStrategy beanResolver){
 		return new DefaultActionExecutorNew(beanResolver);
 	}
 	
 	@Bean(name="default._get$execute")
-	public CommandExecutor<?> defaultActionExecutorGet(BeanResolverStrategy beanResolver){
+	public DefaultActionExecutorGet defaultActionExecutorGet(BeanResolverStrategy beanResolver){
 		return new DefaultActionExecutorGet(beanResolver);
 	}
 	
 	@Bean(name="default._nav$execute")
-	public CommandExecutor<?> defaultActionExecutorNav(BeanResolverStrategy beanResolver){
-		return new DefaultActionExecutorNav<>(beanResolver);
+	public DefaultActionExecutorNav defaultActionExecutorNav(BeanResolverStrategy beanResolver){
+		return new DefaultActionExecutorNav(beanResolver);
 	}
 	
 	@Bean(name="default._process$execute")
-	public CommandExecutor<?> defaultActionExecutorProcess(BeanResolverStrategy beanResolver){
-		return new DefaultActionExecutorProcess<>(beanResolver);
+	public DefaultActionExecutorProcess defaultActionExecutorProcess(BeanResolverStrategy beanResolver){
+		return new DefaultActionExecutorProcess(beanResolver);
 	}
 	
 	@Bean(name="default._update$execute")
-	public CommandExecutor<?> defaultActionExecutorUpdate(BeanResolverStrategy beanResolver){
+	public DefaultActionExecutorUpdate defaultActionExecutorUpdate(BeanResolverStrategy beanResolver){
 		return new DefaultActionExecutorUpdate(beanResolver);
 	}
 	
 	@Bean(name="default._delete$execute")
-	public CommandExecutor<?> defaultActionProcessExecutorDelete(BeanResolverStrategy beanResolver){
+	public DefaultActionExecutorDelete defaultActionProcessExecutorDelete(BeanResolverStrategy beanResolver){
 		return new DefaultActionExecutorDelete(beanResolver);
 	}
 	
 	@Bean(name="default._replace$execute")
-	public CommandExecutor<?> defaultActionProcessExecutorReplace(BeanResolverStrategy beanResolver){
+	public DefaultActionExecutorReplace defaultActionProcessExecutorReplace(BeanResolverStrategy beanResolver){
 		return new DefaultActionExecutorReplace(beanResolver);
 	}
 	
 	@Bean(name="default._config$execute")
-	public CommandExecutor<?> defaultBehaviorExecutorConfig(BeanResolverStrategy beanResolver){
+	public DefaultActionExecutorConfig defaultBehaviorExecutorConfig(BeanResolverStrategy beanResolver){
 		return new DefaultActionExecutorConfig(beanResolver);
 	}
 	
 	@Bean(name="default.$state")
-	public CommandExecutor<?> defaultActionBehaviorExecutorGetState(BeanResolverStrategy beanResolver){
+	public DefaultBehaviorExecutorState defaultActionBehaviorExecutorGetState(BeanResolverStrategy beanResolver){
 		return new DefaultBehaviorExecutorState(beanResolver);
 	}
 	
@@ -153,8 +151,8 @@ public class DefaultCoreExecutorConfig {
 	}
 
 	@Bean(name="default._search$execute")
-	public CommandExecutor<?> defaultActionExecutorSearch(BeanResolverStrategy beanResolver){
-		return new DefaultActionExecutorSearch<>(beanResolver);
+	public DefaultActionExecutorSearch defaultActionExecutorSearch(BeanResolverStrategy beanResolver){
+		return new DefaultActionExecutorSearch(beanResolver);
 	}	
 	
 }

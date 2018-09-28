@@ -33,7 +33,7 @@ import lombok.Getter;
  */
 @EnableLoggingInterceptor
 @Getter(value=AccessLevel.PROTECTED)
-public class DefaultActionExecutorProcess<R> extends AbstractCommandExecutor<R> {
+public class DefaultActionExecutorProcess extends AbstractCommandExecutor<Object> {
 	
 	private BPMGateway bpmGateway;
 	
@@ -43,16 +43,16 @@ public class DefaultActionExecutorProcess<R> extends AbstractCommandExecutor<R> 
 	}
 	
 	@Override
-	protected Output<R> executeInternal(Input input) {
-		R response = continueBusinessProcessExecution(input.getContext());
+	protected Output<Object> executeInternal(Input input) {
+		Object response = continueBusinessProcessExecution(input.getContext());
 		return Output.instantiate(input, input.getContext(), response);
 	}
 	
 	@SuppressWarnings("unchecked")
-	private R continueBusinessProcessExecution(ExecutionContext eCtx){
+	private Object continueBusinessProcessExecution(ExecutionContext eCtx){
 		QuadModel<?,?> quadModel = getQuadModel(eCtx);
 		String processExecutionId = quadModel.getFlow().getProcessExecutionId();
-		return (R)getBpmGateway().continueBusinessProcessExecution(eCtx.getRootModel().getAssociatedParam(), processExecutionId);
+		return (Object)getBpmGateway().continueBusinessProcessExecution(eCtx.getRootModel().getAssociatedParam(), processExecutionId);
 	}
 
 }
