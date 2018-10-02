@@ -42,13 +42,19 @@ export const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
     template: `
         <span [hidden]="!this.element.visible" [ngClass]="getCssClass()">
             <ng-template [ngIf]="element?.config?.uiStyles?.attributes?.alias == viewComponent.formElementGroup.toString()">
-                <fieldset>
-                    <legend *ngIf="labelConfig?.text">{{labelConfig?.text}}</legend>
+                <fieldset *ngIf="labelConfig?.text">
+                    <legend>{{labelConfig?.text}}</legend>
                     <ng-template ngFor let-frmElem [ngForOf]="element.type.model.params">
                         <nm-frm-grp [element]="frmElem" [form]="form" [elementCss]="elementCss" [position]="position"> 
                         </nm-frm-grp>
                     </ng-template>
                 </fieldset>
+                <ng-template [ngIf]="labelConfig?.text == undefined || labelConfig?.text == null">
+                    <ng-template ngFor let-frmElem [ngForOf]="element.type.model.params">
+                        <nm-frm-grp [element]="frmElem" [form]="form" [elementCss]="elementCss" [position]="position"> 
+                        </nm-frm-grp>
+                    </ng-template>
+                </ng-template>
             </ng-template>
 
             <ng-template [ngIf]="!element.type?.model?.params?.length || element.config?.type?.collection">
