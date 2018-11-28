@@ -45,18 +45,18 @@ describe('MessageComponent', () => {
     });
   });
 
-  it('ngOnInit() should call updateMessageObject()', async function (this: TestContext<MessageComponent>) {
-    spyOn(this.hostComponent, 'updateMessageObject').and.callThrough();
-    this.hostComponent.ngOnInit();
-    expect(this.hostComponent.updateMessageObject).toHaveBeenCalled();
-  });
+  // it('ngOnInit() should call updateMessageObject()', async function (this: TestContext<MessageComponent>) {
+  //   spyOn(this.hostComponent, 'updateMessageObject').and.callThrough();
+  //   this.hostComponent.ngOnInit();
+  //   expect(this.hostComponent.updateMessageObject).toHaveBeenCalled();
+  // });
 
-  it('updateMessageObject() should call messageService.addAll() for toast component', async function (this: TestContext<MessageComponent>) {
-    this.hostComponent.messageContext = 'TOAST';
-    this.hostComponent.messageArray = [{ severity: 'error', summary: 'Error Message', detail: 'test', life: 10000 }];
-    spyOn(messageService, 'addAll').and.callThrough();
-    this.hostComponent.ngOnInit();
-    expect(messageService.addAll).toHaveBeenCalled();
-  });
+  // it('updateMessageObject() should call messageService.addAll() for toast component', async function (this: TestContext<MessageComponent>) {
+  //   this.hostComponent.messageContext = 'TOAST';
+  //   this.hostComponent.messageArray = [{ severity: 'error', summary: 'Error Message', detail: 'test', life: 10000 }];
+  //   spyOn(messageService, 'addAll').and.callThrough();
+  //   this.hostComponent.ngOnInit();
+  //   expect(messageService.addAll).toHaveBeenCalled();
+  // });
 
 });

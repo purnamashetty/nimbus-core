@@ -25,7 +25,7 @@
         </ng-template>
         <ng-template [ngIf]="param.config?.uiStyles?.attributes?.alias == componentTypes.cardDetailsBody.toString()">
             <div  [@accordionAnimation]='expandable ? state : null' (@accordionAnimation.start)="animationStart($event)" (@accordionAnimation.done)="animationDone($event)" 
-                  attr.aria-hidden="{{isHidden}}" [ngClass]= "{'displayNone': isHidden}">
+            attr.aria-hidden="{{isHidden}}" [ngClass]= "{'displayNone': isHidden}">
                 <span class="{{param.config?.uiStyles?.attributes?.cssClass}}" *ngFor="let field of param?.type?.model?.params">
                     <!-- StaticText-->
                     <ng-template [ngIf]="field.config?.uiStyles?.attributes?.alias == componentTypes.staticText.toString()">

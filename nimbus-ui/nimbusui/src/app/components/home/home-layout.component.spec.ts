@@ -247,10 +247,11 @@ describe('HomeLayoutCmp', () => {
   it('button, panelMenu, headerGlobal, footer should be created', function (this: TestContext<HomeLayoutCmp>) {
     layoutService.parseLayoutConfig(layout);
     this.fixture.detectChanges();
+    this.hostComponent.ngOnInit();
     layoutService.parseLayoutConfig(layout);
     const debugElement = this.fixture.debugElement;
     const panelMenu = debugElement.query(By.css('nm-panelMenu'));
-    const button  = debugElement.query(By.css(".navbar-toggler.collapsed.home"));
+    const button  = debugElement.query(By.css(".navbar-toggler.collapsed"));
     const headerGlobal  = debugElement.query(By.css('nm-header-global'));
     const footer = debugElement.query(By.css('nm-footer-global'));
     expect(button.name).toEqual('button');
