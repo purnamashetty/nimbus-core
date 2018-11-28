@@ -179,7 +179,7 @@ export class BaseElement {
     /**
      * Get the label text for this element.
      */
-    public get label(): string {
+    public get label(): string {        
         return ParamUtils.getLabelText(this.labelConfig);
     }
 

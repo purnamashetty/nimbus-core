@@ -4,9 +4,14 @@ import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/primeng';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
+import { By } from '@angular/platform-browser';
+import { StorageServiceModule, SESSION_STORAGE } from 'angular-webstorage-service';
+import { JL } from 'jsnlog';
+import { Location, LocationStrategy, HashLocationStrategy } from '@angular/common';
+import { Component, Input } from '@angular/core';
 
 import { CardDetailsFieldComponent } from './card-details-field.component';
-import { InPlaceEditorComponent } from '../form/elements/inplace-editor.component';
+// import { InPlaceEditorComponent } from '../form/elements/inplace-editor.component';
 import { InputText } from '../form/elements/textbox.component';
 import { TextArea } from '../form/elements/textarea.component';
 import { ComboBox } from '../form/elements/combobox.component';
@@ -18,10 +23,25 @@ import { DisplayValueDirective } from '../../../directives/display-value.directi
 import { InputLabel } from '../../platform/form/elements/input-label.component';
 import { configureTestSuite } from 'ng-bullet';
 import { setup, TestContext } from '../../../setup.spec';
-import * as data from '../../../payload.json';
+// import * as data from '../../../payload.json';
 import { Values, Param } from '../../../shared/param-state';
+import * as data from './card-details-field-payload.json';
+import { PageService } from './../../../services/page.service';
+import { SessionStoreService, CUSTOM_STORAGE } from './../../../services/session.store';
+import { LoaderService } from './../../../services/loader.service';
+import { ConfigService } from './../../../services/config.service';
+import { LoggerService } from '../../../services/logger.service';
+import { AppInitService } from '../../../services/app.init.service';
 
 let param: Param;
+
+@Component({
+  template: '<div></div>',
+  selector: 'inplace-editor'
+})
+export class InPlaceEditorComponent {
+  @Input() element: any;
+}
 
 const declarations = [
   CardDetailsFieldComponent,
@@ -35,14 +55,20 @@ const declarations = [
   DisplayValueDirective,
   InputLabel
 ];
-const imports = [FormsModule, DropdownModule, HttpClientModule, HttpModule];
-const providers = [CustomHttpClient];
+const imports = [FormsModule, DropdownModule, HttpClientModule, HttpModule, StorageServiceModule];
+const providers = [    { provide: CUSTOM_STORAGE, useExisting: SESSION_STORAGE },
+  SessionStoreService, CustomHttpClient, PageService, LoaderService, ConfigService, LoggerService,
+  { provide: 'JSNLOG', useValue: JL },
+  AppInitService,
+  { provide: LocationStrategy, useClass: HashLocationStrategy },
+  Location,
+];
 
 describe('CardDetailsFieldComponent', () => {
 
   configureTestSuite();
   setup(CardDetailsFieldComponent, declarations, imports, providers);
-  param = (<any>data).payload;
+  param = (<any>data).inplaceEditor;
 
   beforeEach(async function(this: TestContext<CardDetailsFieldComponent>){
     this.hostComponent.element = param;
@@ -50,6 +76,67 @@ describe('CardDetailsFieldComponent', () => {
 
   it('should create the CardDetailsFieldComponent', async function (this: TestContext<CardDetailsFieldComponent>) {
     expect(this.hostComponent).toBeTruthy();
+  });
+
+  it('inplaceEditor should be created', async function (this: TestContext<CardDetailsFieldComponent>) {
+    this.fixture.detectChanges();
+    const debugElement = this.fixture.debugElement;
+    const inplaceEditor = debugElement.query(By.css('inplace-editor'));
+    expect(inplaceEditor.name).toEqual('inplace-editor');
+  });
+
+  it('inplaceEditor should not be created', async function (this: TestContext<CardDetailsFieldComponent>) {
+    this.hostComponent.element.config.uiStyles.attributes.inplaceEdit = false;
+    this.fixture.detectChanges();
+    const debugElement = this.fixture.debugElement;
+    const inplaceEditor = debugElement.query(By.css('inplace-editor'));
+    expect(inplaceEditor).toBeFalsy();
+  });
+
+  it('inplaceEditor should not be created', async function (this: TestContext<CardDetailsFieldComponent>) {
+    this.hostComponent.element.config.uiStyles.attributes.imgSrc = 't';
+    this.fixture.detectChanges();
+    const debugElement = this.fixture.debugElement;
+    const inplaceEditor = debugElement.query(By.css('inplace-editor'));
+    expect(inplaceEditor).toBeFalsy();
+  });
+
+  it('inplaceLabel should be created', async function (this: TestContext<CardDetailsFieldComponent>) {
+    const iLabel = (<any>data).inputLabel;
+    this.hostComponent.element = iLabel;
+    this.fixture.detectChanges();
+    const debugElement = this.fixture.debugElement;
+    const inputLabel = debugElement.query(By.css('nm-input-label'));
+    expect(inputLabel.name).toEqual('nm-input-label');
+  });
+
+  it('inputLabel should not be created', async function (this: TestContext<CardDetailsFieldComponent>) {
+    const iLabel = (<any>data).inputLabel;
+    this.hostComponent.element = iLabel;
+    this.hostComponent.element.config.uiStyles.attributes.showName = false;
+    this.fixture.detectChanges();
+    const debugElement = this.fixture.debugElement;
+    const inputLabel = debugElement.query(By.css('nm-input-label'));
+    expect(inputLabel).toBeFalsy();
+  });
+
+  it('inplaceLabel should be created', async function (this: TestContext<CardDetailsFieldComponent>) {
+    const iLabel = (<any>data).inputLabelNoDate;
+    this.hostComponent.element = iLabel;
+    this.fixture.detectChanges();
+    const debugElement = this.fixture.debugElement;
+    const inputLabel = debugElement.query(By.css('nm-input-label'));
+    expect(inputLabel.name).toEqual('nm-input-label');
+  });
+
+  it('inputLabel should not be created', async function (this: TestContext<CardDetailsFieldComponent>) {
+    const iLabel = (<any>data).inputLabelNoDate;
+    this.hostComponent.element = iLabel;
+    this.hostComponent.element.config.uiStyles.attributes.showName = false;
+    this.fixture.detectChanges();
+    const debugElement = this.fixture.debugElement;
+    const inputLabel = debugElement.query(By.css('nm-input-label'));
+    expect(inputLabel).toBeFalsy();
   });
 
   it('ngOnInit() should update fieldClass property for cols:6', async function (this: TestContext<CardDetailsFieldComponent>) {

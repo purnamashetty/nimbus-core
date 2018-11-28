@@ -103,7 +103,8 @@ import { PrintDirective } from '../../directives/print.directive';
  */
 let param: Param;
 
-const declarations = [ Form,
+const declarations = [ 
+    Form,
     FrmGroupCmp,
     Accordion,
     ButtonGroup,
@@ -153,7 +154,8 @@ const declarations = [ Form,
     InputLegend ,
     PrintDirective
 ];
-const imports = [   FormsModule, ReactiveFormsModule,
+const imports = [   
+    FormsModule, ReactiveFormsModule,
     GrowlModule,
     MessagesModule,
     DialogModule,
@@ -175,7 +177,8 @@ const imports = [   FormsModule, ReactiveFormsModule,
     AngularSvgIconModule,
     ToastModule,
     InputSwitchModule, 
-    TreeTableModule ];
+    TreeTableModule 
+];
 const providers = [];
 
 describe("form error message component", () => {
@@ -194,7 +197,6 @@ describe("form error message component", () => {
         fg.addControl(param.type.model.params[0].config.code, new FormControl(param.type.model.params[0].leafState,checks));
         this.hostComponent.form = fg;
         this.hostComponent.element = param;
-      this.hostComponent.element = param;
     });
 
     it("check if message is displayed", function(this: TestContext<FormErrorMessage>) {

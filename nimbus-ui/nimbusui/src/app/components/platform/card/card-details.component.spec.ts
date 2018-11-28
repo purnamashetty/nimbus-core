@@ -5,6 +5,7 @@ import { DropdownModule } from 'primeng/primeng';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { By } from '@angular/platform-browser';
 
 import { CardDetailsComponent } from './card-details.component';
 import { Link } from '../link.component';
@@ -87,6 +88,13 @@ describe('CardDetailsComponent', () => {
     pageService = TestBed.get(PageService);
   });
 
+  // it('should create the Label', async function (this: TestContext<CardDetailsComponent>) {
+  //   this.fixture.detectChanges();
+  //   const debugElement = this.fixture.debugElement;
+  //   const Label = debugElement.query(By.css('nm-label'));
+  //   expect(Label.name).toEqual('nm-label');
+  // });
+
   it('should create the CardDetailsComponent', async function (this: TestContext<CardDetailsComponent>) {
     expect(this.hostComponent).toBeTruthy();
   });
@@ -133,3 +141,165 @@ describe('CardDetailsComponent', () => {
   });
 
 });
+
+const element: any = {
+  "config": {
+      "active": false,
+      "required": false,
+      "id": "3980",
+      "code": "vcdOwnerInfo",
+      "validations": null,
+      "uiNatures": [],
+      "uiStyles": {
+          "isLink": false,
+          "isHidden": false,
+          "name": "ViewConfig.CardDetail",
+          "attributes": {
+              "hidden": false,
+              "readOnly": false,
+              "submitButton": true,
+              "showName": true,
+              "pageSize": 25,
+              "browserBack": false,
+              "showAsLink": false,
+              "border": false,
+              "cssClass": "contentBox right-gutter bg-alternate mt-0",
+              "draggable": false,
+              "expandable": true,
+              "editable": false,
+              "modelPath": "",
+              "alias": "CardDetail",
+              "imgSrc": ""
+          }
+      },
+      "type": {
+          "collection": false,
+          "nested": true,
+          "name": "VPOwnerInfo.VCDOwnerInfo",
+          "model": {
+              "paramConfigIds": [
+                  "3982",
+                  "3992"
+              ]
+          }
+      }
+  },
+  "enabled": true,
+  "visible": true,
+  "activeValidationGroups": [],
+  "collectionParams": [],
+  "configId": "3980",
+  "path": "/ownerview/vpOwnerInfo/vtOwnerInfo/vsOwnerInfo/vcdOwnerInfo",
+  "type": {
+      "model": {
+          "params": [
+              {
+                  "enabled": true,
+                  "visible": true,
+                  "activeValidationGroups": [],
+                  "collectionParams": [],
+                  "configId": "3982",
+                  "path": "/ownerview/vpOwnerInfo/vtOwnerInfo/vsOwnerInfo/vcdOwnerInfo/vcdbOwner",
+                  "type": {
+                      "model": {
+                          "params": [                          ]
+                      }
+                  },
+                  "message": [],
+                  "values": [],
+                  "labels": [],
+                  "elemLabels": {}
+              },
+              {
+                  "enabled": true,
+                  "visible": true,
+                  "activeValidationGroups": [],
+                  "collectionParams": [],
+                  "configId": "3992",
+                  "path": "/ownerview/vpOwnerInfo/vtOwnerInfo/vsOwnerInfo/vcdOwnerInfo/vcdbOwner1",
+                  "type": {
+                      "model": {
+                          "params": [
+                              {
+                                  "enabled": true,
+                                  "visible": true,
+                                  "activeValidationGroups": [],
+                                  "collectionParams": [],
+                                  "configId": "3994",
+                                  "path": "/ownerview/vpOwnerInfo/vtOwnerInfo/vsOwnerInfo/vcdOwnerInfo/vcdbOwner1/vbgDefault1",
+                                  "type": {
+                                      "model": {
+                                          "params": [
+                                              {
+                                                  "enabled": true,
+                                                  "visible": true,
+                                                  "activeValidationGroups": [],
+                                                  "collectionParams": [],
+                                                  "configId": "3996",
+                                                  "path": "/ownerview/vpOwnerInfo/vtOwnerInfo/vsOwnerInfo/vcdOwnerInfo/vcdbOwner1/vbgDefault1/submit",
+                                                  "type": {
+                                                      "nested": false,
+                                                      "name": "string",
+                                                      "collection": false
+                                                  },
+                                                  "message": [],
+                                                  "values": [],
+                                                  "labels": [
+                                                      {
+                                                          "locale": "en-US",
+                                                          "text": "Submit"
+                                                      }
+                                                  ],
+                                                  "elemLabels": {}
+                                              },
+                                              {
+                                                  "enabled": true,
+                                                  "visible": true,
+                                                  "activeValidationGroups": [],
+                                                  "collectionParams": [],
+                                                  "configId": "3997",
+                                                  "path": "/ownerview/vpOwnerInfo/vtOwnerInfo/vsOwnerInfo/vcdOwnerInfo/vcdbOwner1/vbgDefault1/back",
+                                                  "type": {
+                                                      "nested": false,
+                                                      "name": "string",
+                                                      "collection": false
+                                                  },
+                                                  "message": [],
+                                                  "values": [],
+                                                  "labels": [
+                                                      {
+                                                          "locale": "en-US",
+                                                          "text": "Back"
+                                                      }
+                                                  ],
+                                                  "elemLabels": {}
+                                              }
+                                          ]
+                                      }
+                                  },
+                                  "message": [],
+                                  "values": [],
+                                  "labels": [],
+                                  "elemLabels": {}
+                              }
+                          ]
+                      }
+                  },
+                  "message": [],
+                  "values": [],
+                  "labels": [],
+                  "elemLabels": {}
+              }
+          ]
+      }
+  },
+  "message": [],
+  "values": [],
+  "labels": [
+      {
+          "locale": "en-US",
+          "text": "testing card details label"
+      }
+  ],
+  "elemLabels": {}
+};

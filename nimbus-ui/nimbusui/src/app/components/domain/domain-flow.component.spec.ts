@@ -17,6 +17,8 @@ import { TableModule } from 'primeng/table';
 import { KeyFilterModule } from 'primeng/keyfilter';
 import { FormsModule, ReactiveFormsModule, ValidatorFn, Validators, FormGroup, FormControl } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { By } from '@angular/platform-browser';
 
 import { DomainFlowCmp } from './domain-flow.component';
 import { SubHeaderCmp } from '../platform/sub-header.component';
@@ -32,10 +34,7 @@ import { LoggerService } from '../../services/logger.service';
 import { SessionStoreService, CUSTOM_STORAGE } from '../../services/session.store';
 import { AppInitService } from '../../services/app.init.service'
 import { ActionTray } from '../platform/actiontray.component';
-import { Button } from '../platform/form/elements/button.component';
 import { SvgComponent } from '../platform/svg/svg.component';
-import { Accordion } from '../platform/content/accordion.component';
-import { Modal } from '../platform/modal/modal.component';
 import { Image } from '../platform/image.component';
 import { CardDetailsGrid } from '../platform/card/card-details-grid.component';
 import { CardDetailsComponent } from '../platform/card/card-details.component';
@@ -82,6 +81,10 @@ import { FormErrorMessage } from '../platform/form-error-message.component';
 import { setup, TestContext } from '../../setup.spec';
 import { configureTestSuite } from 'ng-bullet';
 import { PrintDirective } from '../../directives/print.directive';
+import * as data from './domain-flow-payload.json';
+import { PrintService } from '../../services/print.service';
+import { FileService } from '../../services/file.service';
+import { Layout } from '../../model/menu-meta.interface';
 
 let layoutservice, pageservice, router, route;
 
@@ -97,10 +100,39 @@ export class NmPanelMenu {
 }
 
 @Component({
+  template: '<div></div>',
+  selector: 'nm-button'
+})
+export class Button {
+  @Input() element: any;
+  @Input() payload: string;
+  @Input() form: any;
+  @Input() actionTray?: boolean;
+
+  @Output() buttonClickEvent = new EventEmitter();
+
+  @Output() elementChange = new EventEmitter();
+  private imagesPath: string;
+  private btnClass: string;
+  private disabled: boolean;
+  files: any;
+  differ: any;
+  componentTypes: any;
+}
+
+@Component({
     template: '<div></div>',
     selector: 'nm-breadcrumb'
 })
 export class BreadcrumbComponent {
+}
+
+@Component({
+  template: '<div></div>',
+  selector: 'nm-modal'
+})
+export class Modal {
+  @Input() element: any;
 }
 
 @Component({
@@ -110,6 +142,22 @@ export class BreadcrumbComponent {
 export class NmPanelMenuSub {
     @Input() item: any;
     @Input() expanded: boolean;
+}
+
+@Component({
+  template: '<div></div>',
+  selector: 'nm-accordion'
+})
+export class Accordion {
+  @Input() form: FormGroup;
+  @Input() elementCss: string;
+  @Input() element: any;
+  @Input() position: any;
+  componentTypes: any;
+  viewComponent: any;
+  _multiple: boolean;
+  index: number[]; 
+  @ViewChild('accordion') accordion: any;
 }
 
 @Component({
@@ -154,6 +202,10 @@ class MockPageService {
     this.config$.next(res);
   }
 
+}
+
+class MockWebContentSvc {
+  findLabelContent() {}
 }
 
 export class MockActivatedRoute implements ActivatedRoute {
@@ -322,7 +374,8 @@ export class MockActivatedRoute implements ActivatedRoute {
      KeyFilterModule,
      FormsModule,
      ReactiveFormsModule,
-     ToastModule
+     ToastModule,
+     BrowserAnimationsModule
  ];
  const providers = [
      {provide: LayoutService, useClass: MockLayoutService},
@@ -332,29 +385,81 @@ export class MockActivatedRoute implements ActivatedRoute {
      { provide: CUSTOM_STORAGE, useExisting: SESSION_STORAGE },
      { provide: 'JSNLOG', useValue: JL },
      {provide: LoggerService, useClass: MockLoggerService},
+     {provide: WebContentSvc, useClass: MockWebContentSvc},
      CustomHttpClient,
-     WebContentSvc,
      LoaderService,
      ConfigService,
      BreadcrumbService,
      SessionStoreService,
-     AppInitService
+     AppInitService,
+     PrintService,
+     FileService
   ];
 
 describe('DomainFlowCmp', () => {
 
     configureTestSuite();
     setup(DomainFlowCmp, declarations, imports, providers);
+    const accordions = (<any>data).accordions;
+    const items = (<any>data).items;
+    const actionTray = (<any>data).actionTray;
+    const modalItems = (<any>data).modalItems;
 
   beforeEach(async function(this: TestContext<DomainFlowCmp>) {
     layoutservice = TestBed.get(LayoutService);
     pageservice = TestBed.get(PageService);
     router = TestBed.get(Router);
     route = TestBed.get(ActivatedRoute);
+    this.hostComponent.accordions = accordions;
+    this.hostComponent.items = items;
+    this.hostComponent.actionTray = actionTray;
+    this.hostComponent.modalItems = modalItems;
   });
 
   it('should create the app', function(this: TestContext<DomainFlowCmp>) {
     expect(this.hostComponent).toBeTruthy();
+  });
+
+  it('accordion, button, breadcrump, panelmenu, actiontray and modal should be created', function(this: TestContext<DomainFlowCmp>) {
+    this.fixture.detectChanges();
+    const debugElement = this.fixture.debugElement;
+    const breadcrumb  = debugElement.query(By.css('nm-breadcrumb'));
+    const accordion  = debugElement.query(By.css('nm-accordion'));
+    const button  = debugElement.query(By.css('button'));
+    const panelMenu = debugElement.query(By.css('nm-panelMenu'));
+    const actiontray = debugElement.query(By.css('nm-actiontray'));
+    const modal = debugElement.query(By.css('nm-modal'));
+    expect(breadcrumb.name).toEqual('nm-breadcrumb');
+    expect(button.name).toEqual('button');
+    expect(panelMenu.name).toEqual('nm-panelMenu');
+    expect(actiontray.name).toEqual('nm-actiontray');
+    expect(accordion.name).toEqual('nm-accordion');
+    expect(modal.name).toEqual('nm-modal');
+  });
+
+  it('action tray should not be created', function(this: TestContext<DomainFlowCmp>) {
+    this.hostComponent.actionTray = null;
+    this.fixture.detectChanges();
+    layoutservice.parseLayoutConfig(data);
+    const debugElement = this.fixture.debugElement;
+    const actiontray = debugElement.query(By.css('nm-actiontray'));
+    expect(actiontray).toBeFalsy();
+  });
+
+  it('accordion should not be created', function(this: TestContext<DomainFlowCmp>) {
+    this.hostComponent.accordions = null;
+    this.fixture.detectChanges();
+    const debugElement = this.fixture.debugElement;
+    const accordion  = debugElement.query(By.css('nm-accordion'));
+    expect(accordion).toBeFalsy();
+  });
+
+  it('modal should not be created', function(this: TestContext<DomainFlowCmp>) {
+    this.hostComponent.modalItems = [];
+    this.fixture.detectChanges();
+    const debugElement = this.fixture.debugElement;
+    const modal = debugElement.query(By.css('nm-modal'));
+    expect(modal).toBeFalsy();
   });
 
   it('ngOnInit() should not update main-content', function(this: TestContext<DomainFlowCmp>) {
@@ -399,29 +504,3 @@ const secondProviders = [
     SessionStoreService,
     AppInitService
  ];
-
-describe('DomainFlowCmp', () => {
-
-    configureTestSuite();
-    setup(DomainFlowCmp, declarations, imports, secondProviders);
-
-  beforeEach(async function(this: TestContext<DomainFlowCmp>) {
-    layoutservice = TestBed.get(LayoutService);
-    pageservice = TestBed.get(PageService);
-    router = TestBed.get(Router);
-    route = TestBed.get(ActivatedRoute);
-  });
-
-  it('ngOnInit should not call layoutservice.getLayout()', function(this: TestContext<DomainFlowCmp>) {
-    spyOn(layoutservice, 'getLayout').and.callThrough();
-    spyOn(document, 'getElementById').and.returnValue({
-      classList: {
-        remove: () => {},
-        add: () => {}
-      }
-    });
-    this.hostComponent.ngOnInit();
-    expect(layoutservice.getLayout).not.toHaveBeenCalled();
-  });
-
-});

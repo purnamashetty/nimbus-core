@@ -20,12 +20,13 @@ import {
 import { StorageServiceModule, SESSION_STORAGE } from 'angular-webstorage-service';
 import { JL } from 'jsnlog';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChildren } from '@angular/core';
+import { By } from '@angular/platform-browser';
 
 import { HomeLayoutCmp } from './home-layout.component';
 import { FooterGlobal } from '../platform/footer/footer-global.component';
-import { HeaderGlobal } from '../platform/header/header-global.component';
-import { Link } from '../platform/link.component';
+// import { HeaderGlobal } from '../platform/header/header-global.component';
+// import { Link } from '../platform/link.component';
 import { Paragraph } from '../platform/content/paragraph.component';
 import { ComboBox } from '../platform/form/elements/combobox.component';
 import { KeysPipe } from '../../pipes/app.pipe';
@@ -50,6 +51,8 @@ import { InputLabel } from '../platform/form/elements/input-label.component';
 import { Image } from '../platform/image.component';
 import { setup, TestContext } from '../../setup.spec';
 import { configureTestSuite } from 'ng-bullet';
+import * as data from './home-layout-payload.json';
+
 
 @Component({
   template: '<div></div>',
@@ -58,6 +61,36 @@ import { configureTestSuite } from 'ng-bullet';
 export class NmPanelMenuSub {
   @Input() item: any;
   @Input() expanded: boolean;
+}
+
+@Component({
+  template: '<div></div>',
+  selector: 'nm-link'
+})
+export class Link {
+  @Input() element: any;
+  @Input() root: any;
+  @Input() inClass: string;
+  @Input() renderAsLink: boolean;
+  @Input() rowData?: any;
+  private linkClass: string = 'basicView';
+  private imagesPath: string;
+  componentTypes: any;
+}
+
+@Component({
+  template: '<div></div>',
+  selector: 'nm-header-global'
+})
+export class HeaderGlobal {
+  @Input() branding : any;
+  @Input() topMenuItems: any[];
+  @Input() leftMenuItems: any[];
+  @Input() element: any;
+  private imagesPath: string;
+  private _homeRoute: string;
+  @ViewChildren('dropDown') dropDowns: any;
+  mouseEventSubscription: any;
 }
 
 @Component({
@@ -109,6 +142,10 @@ class MockLoggerService {
   debug() { }
   info() { }
   error() { }
+}
+
+class MockWebContentSvc {
+  findLabelContent(a) {}
 }
 
 export class MockActivatedRoute implements ActivatedRoute {
@@ -174,8 +211,8 @@ const declarations= [
     { provide: CUSTOM_STORAGE, useExisting: SESSION_STORAGE },
     { provide: 'JSNLOG', useValue: JL },
     {provide: LoggerService, useClass: MockLoggerService},
+    {provide: WebContentSvc, useClass: MockWebContentSvc},
     CustomHttpClient,
-    WebContentSvc,
     LoaderService,
     ConfigService,
     BreadcrumbService,
@@ -205,6 +242,22 @@ describe('HomeLayoutCmp', () => {
 
   it('should create the app', function (this: TestContext<HomeLayoutCmp>) {
     expect(this.hostComponent).toBeTruthy();
+  });
+
+  it('button, panelMenu, headerGlobal, footer should be created', function (this: TestContext<HomeLayoutCmp>) {
+    layoutService.parseLayoutConfig(layout);
+    this.fixture.detectChanges();
+    layoutService.parseLayoutConfig(layout);
+    const debugElement = this.fixture.debugElement;
+    const panelMenu = debugElement.query(By.css('nm-panelMenu'));
+    const button  = debugElement.query(By.css(".navbar-toggler.collapsed.home"));
+    const headerGlobal  = debugElement.query(By.css('nm-header-global'));
+    const footer = debugElement.query(By.css('nm-footer-global'));
+    expect(button.name).toEqual('button');
+    expect(button.nativeElement.classList.contains('navbar-toggler', 'collapsed', 'home')).toBeTruthy();
+    expect(panelMenu.name).toEqual('nm-panelMenu');
+    expect(headerGlobal.name).toEqual('nm-header-global');
+    expect(footer.name).toEqual('nm-footer-global');
   });
 
   it('ngOnInint() should get layout from layout service', function (this: TestContext<HomeLayoutCmp>) {
@@ -303,3 +356,129 @@ describe('HomeLayoutCmp', () => {
   });
 
 });
+
+const layout:any = {
+    "menu": [
+        {
+            "label": "Home",
+            "path": "/home/vpHome/vsHomeLeftBar/home",
+            "page": "",
+            "icon": "tasksIcon",
+            "imgType": "FA",
+            "url": "petclinicdashboard/vpDashboard",
+            "type": "INTERNAL",
+            "target": "",
+            "rel": "",
+            "routerLink": "/h/petclinicdashboard/vpDashboard",
+            "code": "home"
+        },
+        {
+            "label": "Veterinarians",
+            "path": "/home/vpHome/vsHomeLeftBar/vets",
+            "page": "",
+            "icon": "caseHistoryIcon",
+            "imgType": "FA",
+            "url": "veterinarianview/vpVeterenarians",
+            "type": "INTERNAL",
+            "target": "",
+            "rel": "",
+            "routerLink": "/h/veterinarianview/vpVeterenarians",
+            "code": "vets"
+        },
+        {
+            "label": "Owners",
+            "path": "/home/vpHome/vsHomeLeftBar/owners",
+            "page": "",
+            "icon": "caseHistoryIcon",
+            "imgType": "FA",
+            "url": "ownerlandingview/vpOwners",
+            "type": "INTERNAL",
+            "target": "",
+            "rel": "",
+            "routerLink": "/h/ownerlandingview/vpOwners",
+            "code": "owners"
+        },
+        {
+            "label": "Pets",
+            "path": "/home/vpHome/vsHomeLeftBar/pets",
+            "page": "",
+            "icon": "caseHistoryIcon",
+            "imgType": "FA",
+            "url": "petview/vpAllPets",
+            "type": "INTERNAL",
+            "target": "",
+            "rel": "",
+            "routerLink": "/h/petview/vpAllPets",
+            "code": "pets"
+        },
+        {
+            "label": "Notes",
+            "path": "/home/vpHome/vsHomeLeftBar/notes",
+            "page": "",
+            "icon": "notesIcon",
+            "imgType": "FA",
+            "url": "petclinicdashboard/vpNotes",
+            "type": "INTERNAL",
+            "target": "",
+            "rel": "",
+            "routerLink": "/h/petclinicdashboard/vpNotes",
+            "code": "notes"
+        }
+    ],
+    "topBar": {
+        "branding": {
+            "logo": {
+                "configSvc": {
+                    "flowConfigs": {
+                        "ownerview": {
+                            "model": {
+                                "params": [ ]
+                            },
+                            "layout": "home"
+                        },
+                        "home": {
+                            "model": {
+                                "params": [ ]
+                            }
+                        }
+                    }
+                },
+                "enabled": true,
+                "visible": true,
+                "activeValidationGroups": [],
+                "collectionParams": [],
+                "configId": "3923",
+                "path": "/home/vpHome/vsHomeHeader/linkHomeLogo",
+                "type": {
+                    "nested": false,
+                    "name": "string",
+                    "collection": false
+                },
+                "message": [],
+                "values": [],
+                "labels": [
+                    {
+                        "locale": "en-US",
+                        "text": "Anthem"
+                    }
+                ],
+                "elemLabels": {}
+            }
+        },
+        "headerMenus": [],
+        "accordions": [
+            null
+        ]
+    },
+    "footer": {
+        "links": [
+            null,
+            null,
+            null,
+            null
+        ]
+    },
+    "modalList": [
+        null
+    ]
+}
