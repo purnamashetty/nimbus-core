@@ -33,7 +33,7 @@ import { ConfigService } from './../../../services/config.service';
 import { LoggerService } from '../../../services/logger.service';
 import { AppInitService } from '../../../services/app.init.service';
 
-let param: Param;
+let param: Param, fixture, hostComponent;
 
 @Component({
   template: '<div></div>',

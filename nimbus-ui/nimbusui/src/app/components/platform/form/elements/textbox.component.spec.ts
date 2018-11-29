@@ -49,8 +49,7 @@ import { AppInitService } from '../../../../services/app.init.service';
  * 
  */
 
-let  param: Param, controlService;
-let fixture, hostComponent;
+let fixture, hostComponent, param, controlService, app;
 const declarations = [InputText, TooltipComponent, InputLabel];
 const imports =  [ FormsModule, HttpClientTestingModule, HttpModule, StorageServiceModule ];
 
@@ -112,8 +111,6 @@ describe('InputText', () => {
 
 // ------------
 
-
-let fixture, app;
 
 describe('InputText', () => {
 

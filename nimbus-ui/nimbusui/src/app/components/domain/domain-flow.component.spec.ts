@@ -412,10 +412,10 @@ describe('DomainFlowCmp', () => {
     pageservice = TestBed.get(PageService);
     router = TestBed.get(Router);
     route = TestBed.get(ActivatedRoute);
-    this.hostComponent.accordions = accordions;
-    this.hostComponent.items = items;
-    this.hostComponent.actionTray = actionTray;
-    this.hostComponent.modalItems = modalItems;
+    // hostComponent.accordions = accordions;
+    // hostComponent.items = items;
+    // hostComponent.actionTray = actionTray;
+    // hostComponent.modalItems = modalItems;
   });
 
   // it('should create the app', function(this: TestContext<DomainFlowCmp>) {

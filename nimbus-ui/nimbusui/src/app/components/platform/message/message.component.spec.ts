@@ -49,19 +49,6 @@ describe('MessageComponent', () => {
     });
   });
 
-<<<<<<< HEAD
-  // it('ngOnInit() should call updateMessageObject()', async function (this: TestContext<MessageComponent>) {
-  //   spyOn(this.hostComponent, 'updateMessageObject').and.callThrough();
-  //   this.hostComponent.ngOnInit();
-  //   expect(this.hostComponent.updateMessageObject).toHaveBeenCalled();
-  // });
-
-  // it('updateMessageObject() should call messageService.addAll() for toast component', async function (this: TestContext<MessageComponent>) {
-  //   this.hostComponent.messageContext = 'TOAST';
-  //   this.hostComponent.messageArray = [{ severity: 'error', summary: 'Error Message', detail: 'test', life: 10000 }];
-  //   spyOn(messageService, 'addAll').and.callThrough();
-  //   this.hostComponent.ngOnInit();
-=======
   // it('ngOnInit() should call updateMessageObject()', () => {
   //   spyOn(hostComponent, 'updateMessageObject').and.callThrough();
   //   hostComponent.ngOnInit();
@@ -73,7 +60,6 @@ describe('MessageComponent', () => {
   //   hostComponent.messageArray = [{ severity: 'error', summary: 'Error Message', detail: 'test', life: 10000 }];
   //   spyOn(messageService, 'addAll').and.callThrough();
   //   hostComponent.ngOnInit();
->>>>>>> a9edbfb16002d6b22313bfccd32eeb2f0813158c
   //   expect(messageService.addAll).toHaveBeenCalled();
   // });
 
