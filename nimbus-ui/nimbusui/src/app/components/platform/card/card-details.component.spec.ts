@@ -7,10 +7,11 @@ import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { Component, Input, Output, ViewChild, EventEmitter, ViewChildren } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { CardDetailsComponent } from './card-details.component';
 import { Link } from '../link.component';
-import { CardDetailsFieldComponent } from './card-details-field.component';
+// import { CardDetailsFieldComponent } from './card-details-field.component';
 import { StaticText } from '../content/static-content.component';
 import { InPlaceEditorComponent } from '../form/elements/inplace-editor.component';
 import { InputText } from '../form/elements/textbox.component';
@@ -35,6 +36,7 @@ import { SvgComponent } from '../../platform/svg/svg.component';
 import { configureTestSuite } from 'ng-bullet';
 import { setup, TestContext } from '../../../setup.spec';
 import * as data from '../../../payload.json';
+import { By } from '@angular/platform-browser';
 
 let param, pageService;
 
@@ -64,6 +66,17 @@ class Button {
   componentTypes;
 }
 
+@Component({
+    template: '<div></div>',
+    selector: 'nm-card-details-field'
+  })
+  class CardDetailsFieldComponent {
+  
+    @Input() element: any;
+    @Input() value: string;
+
+  }
+
 const declarations = [
   CardDetailsComponent,
   Link,
@@ -91,7 +104,8 @@ const imports = [
   DropdownModule,
   HttpModule,
   HttpClientModule,
-  AngularSvgIconModule
+  AngularSvgIconModule,
+  BrowserAnimationsModule
 ];
 const providers = [
   { provide: PageService, useClass: MockPageService },
@@ -100,6 +114,623 @@ const providers = [
   ConfigService
 ];
 let fixture, hostComponent;
+
+const element1: any = {
+    "config": {
+        "active": false,
+        "required": false,
+        "id": "3443",
+        "code": "vcdOwnerInfo",
+        "validations": null,
+        "uiNatures": [],
+        "uiStyles": {
+            "isLink": false,
+            "isHidden": false,
+            "name": "ViewConfig.CardDetail",
+            "attributes": {
+                "hidden": false,
+                "readOnly": false,
+                "submitButton": true,
+                "showName": true,
+                "pageSize": 25,
+                "browserBack": false,
+                "showAsLink": false,
+                "border": false,
+                "cssClass": "contentBox right-gutter bg-alternate mt-0",
+                "draggable": false,
+                "expandable": false,
+                "editable": false,
+                "modelPath": "",
+                "alias": "CardDetail",
+                "imgSrc": ""
+            }
+        },
+        "type": {
+            "collection": false,
+            "nested": true,
+            "name": "VPOwnerInfo.VCDOwnerInfo",
+            "model": {
+                "paramConfigIds": [
+                    "3445"
+                ]
+            }
+        }
+    },
+    "enabled": true,
+    "visible": true,
+    "activeValidationGroups": [],
+    "collectionParams": [],
+    "configId": "3443",
+    "path": "/ownerview/vpOwnerInfo/vtOwnerInfo/vsOwnerInfo/vcdOwnerInfo",
+    "type": {
+        "model": {
+            "params": [
+                {
+                    "config": {
+                        "active": false,
+                        "required": false,
+                        "id": "3445",
+                        "code": "vcdbOwner",
+                        "validations": null,
+                        "uiNatures": [],
+                        "uiStyles": {
+                          "isLink": false,
+                          "isHidden": false,
+                          "name": "ViewConfig.CardDetail.Body",
+                          "attributes": {
+                            "hidden": false,
+                            "readOnly": false,
+                            "submitButton": true,
+                            "showName": true,
+                            "pageSize": 25,
+                            "browserBack": false,
+                            "showAsLink": false,
+                            "cssClass": "",
+                            "alias": "CardDetailsBody"
+                          }
+                        },
+                        "type": {
+                          "collection": false,
+                          "nested": true,
+                          "name": "VPOwnerInfo.VCDBOwner",
+                          "model": {
+                              "params": [
+                                {
+                                    "alias": "FieldValue",
+                                    "enabled": true,
+                                    "visible": true,
+                                    "activeValidationGroups": [],
+                                    "collectionParams": [],
+                                    "configId": "3447",
+                                    "path": "/ownerview/vpOwnerInfo/vtOwnerInfo/vsOwnerInfo/vcdOwnerInfo/vcdbOwner/firstName",
+                                    "type": {
+                                        "nested": false,
+                                        "name": "string",
+                                        "collection": false
+                                    },
+                                    "leafState": "test",
+                                    "previousLeafState": "test",
+                                    "message": [],
+                                    "values": [],
+                                    "labels": [
+                                        {
+                                            "locale": "en-US",
+                                            "text": "First Name"
+                                        }
+                                    ],
+                                    "elemLabels": {}
+                                },
+                                {
+                                    "enabled": true,
+                                    "visible": true,
+                                    "activeValidationGroups": [],
+                                    "collectionParams": [],
+                                    "configId": "3448",
+                                    "path": "/ownerview/vpOwnerInfo/vtOwnerInfo/vsOwnerInfo/vcdOwnerInfo/vcdbOwner/lastName",
+                                    "type": {
+                                        "nested": false,
+                                        "name": "string",
+                                        "collection": false
+                                    },
+                                    "leafState": "1",
+                                    "previousLeafState": "1",
+                                    "message": [],
+                                    "values": [],
+                                    "labels": [
+                                        {
+                                            "locale": "en-US",
+                                            "text": "Last Name"
+                                        }
+                                    ],
+                                    "elemLabels": {}
+                                },
+                                {
+                                    "enabled": true,
+                                    "visible": true,
+                                    "activeValidationGroups": [],
+                                    "collectionParams": [],
+                                    "configId": "3449",
+                                    "path": "/ownerview/vpOwnerInfo/vtOwnerInfo/vsOwnerInfo/vcdOwnerInfo/vcdbOwner/divider2",
+                                    "type": {
+                                        "nested": false,
+                                        "name": "string",
+                                        "collection": false
+                                    },
+                                    "message": [],
+                                    "values": [],
+                                    "labels": [],
+                                    "elemLabels": {}
+                                },
+                                {
+                                    "enabled": true,
+                                    "visible": true,
+                                    "activeValidationGroups": [],
+                                    "collectionParams": [],
+                                    "configId": "3450",
+                                    "path": "/ownerview/vpOwnerInfo/vtOwnerInfo/vsOwnerInfo/vcdOwnerInfo/vcdbOwner/address",
+                                    "type": {
+                                        "nested": false,
+                                        "name": "string",
+                                        "collection": false
+                                    },
+                                    "leafState": "",
+                                    "previousLeafState": "",
+                                    "message": [],
+                                    "values": [],
+                                    "labels": [
+                                        {
+                                            "locale": "en-US",
+                                            "text": "Address"
+                                        }
+                                    ],
+                                    "elemLabels": {}
+                                },
+                                {
+                                    "enabled": true,
+                                    "visible": true,
+                                    "activeValidationGroups": [],
+                                    "collectionParams": [],
+                                    "configId": "3451",
+                                    "path": "/ownerview/vpOwnerInfo/vtOwnerInfo/vsOwnerInfo/vcdOwnerInfo/vcdbOwner/city",
+                                    "type": {
+                                        "nested": false,
+                                        "name": "string",
+                                        "collection": false
+                                    },
+                                    "leafState": "",
+                                    "previousLeafState": "",
+                                    "message": [],
+                                    "values": [],
+                                    "labels": [
+                                        {
+                                            "locale": "en-US",
+                                            "text": "City"
+                                        }
+                                    ],
+                                    "elemLabels": {}
+                                },
+                                {
+                                    "enabled": true,
+                                    "visible": true,
+                                    "activeValidationGroups": [],
+                                    "collectionParams": [],
+                                    "configId": "3452",
+                                    "path": "/ownerview/vpOwnerInfo/vtOwnerInfo/vsOwnerInfo/vcdOwnerInfo/vcdbOwner/telephone",
+                                    "type": {
+                                        "nested": false,
+                                        "name": "string",
+                                        "collection": false
+                                    },
+                                    "leafState": "1231231231",
+                                    "previousLeafState": "1231231231",
+                                    "message": [],
+                                    "values": [],
+                                    "labels": [
+                                        {
+                                            "locale": "en-US",
+                                            "text": "Telephone"
+                                        }
+                                    ],
+                                    "elemLabels": {}
+                                },
+                                {
+                                    "enabled": true,
+                                    "visible": true,
+                                    "activeValidationGroups": [],
+                                    "collectionParams": [],
+                                    "configId": "3453",
+                                    "path": "/ownerview/vpOwnerInfo/vtOwnerInfo/vsOwnerInfo/vcdOwnerInfo/vcdbOwner/caseStatusDate",
+                                    "type": {},
+                                    "leafState": "2018-09-04T20:47:18.000Z",
+                                    "message": [],
+                                    "values": [],
+                                    "labels": [
+                                        {
+                                            "locale": "en-US",
+                                            "text": "Case Status Date"
+                                        }
+                                    ],
+                                    "elemLabels": {}
+                                },
+                                {
+                                    "enabled": true,
+                                    "visible": true,
+                                    "activeValidationGroups": [],
+                                    "collectionParams": [],
+                                    "configId": "3454",
+                                    "path": "/ownerview/vpOwnerInfo/vtOwnerInfo/vsOwnerInfo/vcdOwnerInfo/vcdbOwner/caseStatusDate1",
+                                    "type": {},
+                                    "leafState": null,
+                                    "message": [],
+                                    "values": [],
+                                    "labels": [
+                                        {
+                                            "locale": "en-US",
+                                            "text": "Case Status Date"
+                                        }
+                                    ],
+                                    "elemLabels": {}
+                                }
+                            ],
+                            "paramConfigIds": [
+                              "3447",
+                              "3448",
+                              "3449",
+                              "3450",
+                              "3451",
+                              "3452",
+                              "3453",
+                              "3454"
+                            ]
+                          }
+                        }
+                      },                      
+                    "enabled": true,
+                    "visible": true,
+                    "activeValidationGroups": [],
+                    "collectionParams": [],
+                    "configId": "3445",
+                    "path": "/ownerview/vpOwnerInfo/vtOwnerInfo/vsOwnerInfo/vcdOwnerInfo/vcdbOwner",
+                    "type": {
+                        "model": {
+                            "params": [
+                                {
+                                    "config": {
+                                        "active": false,
+                                        "required": false,
+                                        "id": "2478",
+                                        "code": "test",
+                                        "validations": null,
+                                        "uiNatures": [],
+                                        "uiStyles": {
+                                            "isLink": false,
+                                            "isHidden": false,
+                                            "name": "ViewConfig.StaticText",
+                                            "attributes": {
+                                                "hidden": false,
+                                                "readOnly": false,
+                                                "submitButton": true,
+                                                "showName": true,
+                                                "pageSize": 25,
+                                                "browserBack": false,
+                                                "showAsLink": false,
+                                                "cssClass": "",
+                                                "contentId": "",
+                                                "alias": "StaticText"
+                                            }
+                                        },
+                                        "type": {
+                                            "collection": false,
+                                            "nested": false,
+                                            "name": "string"
+                                        }
+                                    },
+                                    "enabled": true,
+                                    "visible": true,
+                                    "activeValidationGroups": [],
+                                    "collectionParams": [],
+                                    "configId": "2478",
+                                    "path": "/ownerview/vpOwnerInfo/vtOwnerInfo/vsOwnerInfo/vcdOwnerInfo/vcdbOwner/test",
+                                    "type": {
+                                        "nested": false,
+                                        "name": "string",
+                                        "collection": false
+                                    },
+                                    "message": [],
+                                    "values": [],
+                                    "labels": [
+                                        {
+                                            "locale": "en-US",
+                                            "text": "testing static label"
+                                        }
+                                    ],
+                                    "elemLabels": {}
+                                },
+                                {
+                                    "config": {
+                                        "active": false,
+                                        "required": false,
+                                        "id": "3447",
+                                        "code": "firstName",
+                                        "validations": null,
+                                        "uiNatures": [],
+                                        "uiStyles": {
+                                            "isLink": false,
+                                            "isHidden": false,
+                                            "name": "ViewConfig.FieldValue",
+                                            "attributes": {
+                                                "hidden": false,
+                                                "readOnly": false,
+                                                "submitButton": true,
+                                                "showName": true,
+                                                "pageSize": 25,
+                                                "browserBack": false,
+                                                "showAsLink": false,
+                                                "inplaceEditType": "",
+                                                "cssClass": "",
+                                                "datePattern": "",
+                                                "alias": "FieldValue",
+                                                "applyValueStyles": false,
+                                                "placeholder": "",
+                                                "inplaceEdit": true,
+                                                "type": "Field",
+                                                "cols": "2",
+                                                "imgSrc": ""
+                                            }
+                                        },
+                                        "type": {
+                                            "collection": false,
+                                            "nested": false,
+                                            "name": "string"
+                                        }
+                                    },
+                                    "alias": "FieldValue",
+                                    "enabled": true,
+                                    "visible": true,
+                                    "activeValidationGroups": [],
+                                    "collectionParams": [],
+                                    "configId": "3447",
+                                    "path": "/ownerview/vpOwnerInfo/vtOwnerInfo/vsOwnerInfo/vcdOwnerInfo/vcdbOwner/firstName",
+                                    "type": {
+                                        "nested": false,
+                                        "name": "string",
+                                        "collection": false
+                                    },
+                                    "leafState": "test",
+                                    "previousLeafState": "test",
+                                    "message": [],
+                                    "values": [],
+                                    "labels": [
+                                        {
+                                            "locale": "en-US",
+                                            "text": "First Name"
+                                        }
+                                    ],
+                                    "elemLabels": {}
+                                },
+                                {
+                                    "config": {
+                                        "active": false,
+                                        "required": false,
+                                        "id": "3640",
+                                        "code": "headerCallSection1",
+                                        "validations": null,
+                                        "uiNatures": [],
+                                        "uiStyles": {
+                                            "isLink": false,
+                                            "isHidden": false,
+                                            "name": "ViewConfig.Paragraph",
+                                            "attributes": {
+                                                "hidden": false,
+                                                "readOnly": false,
+                                                "submitButton": true,
+                                                "showName": true,
+                                                "pageSize": 25,
+                                                "browserBack": false,
+                                                "showAsLink": false,
+                                                "cssClass": "font-weight-bold",
+                                                "alias": "Paragraph"
+                                            }
+                                        },
+                                        "type": {
+                                            "collection": false,
+                                            "nested": false,
+                                            "name": "string"
+                                        }
+                                    },
+                                    "enabled": true,
+                                    "visible": true,
+                                    "activeValidationGroups": [],
+                                    "collectionParams": [],
+                                    "configId": "3640",
+                                    "path": "/ownerview/vpOwnerInfo/vtOwnerInfo/vsOwnerInfo/vcdOwnerInfo/vcdbOwner/headerCallSection1",
+                                    "type": {
+                                        "nested": false,
+                                        "name": "string",
+                                        "collection": false
+                                    },
+                                    "message": [],
+                                    "values": [],
+                                    "labels": [
+                                        {
+                                            "locale": "en-US",
+                                            "text": "teting cardddetails paragraph..."
+                                        }
+                                    ],
+                                    "elemLabels": {}
+                                },
+                                {
+                                    "enabled": true,
+                                    "visible": true,
+                                    "activeValidationGroups": [],
+                                    "collectionParams": [],
+                                    "configId": "3448",
+                                    "path": "/ownerview/vpOwnerInfo/vtOwnerInfo/vsOwnerInfo/vcdOwnerInfo/vcdbOwner/lastName",
+                                    "type": {
+                                        "nested": false,
+                                        "name": "string",
+                                        "collection": false
+                                    },
+                                    "leafState": "1",
+                                    "previousLeafState": "1",
+                                    "message": [],
+                                    "values": [],
+                                    "labels": [
+                                        {
+                                            "locale": "en-US",
+                                            "text": "Last Name"
+                                        }
+                                    ],
+                                    "elemLabels": {}
+                                },
+                                {
+                                    "enabled": true,
+                                    "visible": true,
+                                    "activeValidationGroups": [],
+                                    "collectionParams": [],
+                                    "configId": "3449",
+                                    "path": "/ownerview/vpOwnerInfo/vtOwnerInfo/vsOwnerInfo/vcdOwnerInfo/vcdbOwner/divider2",
+                                    "type": {
+                                        "nested": false,
+                                        "name": "string",
+                                        "collection": false
+                                    },
+                                    "message": [],
+                                    "values": [],
+                                    "labels": [],
+                                    "elemLabels": {}
+                                },
+                                {
+                                    "enabled": true,
+                                    "visible": true,
+                                    "activeValidationGroups": [],
+                                    "collectionParams": [],
+                                    "configId": "3450",
+                                    "path": "/ownerview/vpOwnerInfo/vtOwnerInfo/vsOwnerInfo/vcdOwnerInfo/vcdbOwner/address",
+                                    "type": {
+                                        "nested": false,
+                                        "name": "string",
+                                        "collection": false
+                                    },
+                                    "leafState": "",
+                                    "previousLeafState": "",
+                                    "message": [],
+                                    "values": [],
+                                    "labels": [
+                                        {
+                                            "locale": "en-US",
+                                            "text": "Address"
+                                        }
+                                    ],
+                                    "elemLabels": {}
+                                },
+                                {
+                                    "enabled": true,
+                                    "visible": true,
+                                    "activeValidationGroups": [],
+                                    "collectionParams": [],
+                                    "configId": "3451",
+                                    "path": "/ownerview/vpOwnerInfo/vtOwnerInfo/vsOwnerInfo/vcdOwnerInfo/vcdbOwner/city",
+                                    "type": {
+                                        "nested": false,
+                                        "name": "string",
+                                        "collection": false
+                                    },
+                                    "leafState": "",
+                                    "previousLeafState": "",
+                                    "message": [],
+                                    "values": [],
+                                    "labels": [
+                                        {
+                                            "locale": "en-US",
+                                            "text": "City"
+                                        }
+                                    ],
+                                    "elemLabels": {}
+                                },
+                                {
+                                    "enabled": true,
+                                    "visible": true,
+                                    "activeValidationGroups": [],
+                                    "collectionParams": [],
+                                    "configId": "3452",
+                                    "path": "/ownerview/vpOwnerInfo/vtOwnerInfo/vsOwnerInfo/vcdOwnerInfo/vcdbOwner/telephone",
+                                    "type": {
+                                        "nested": false,
+                                        "name": "string",
+                                        "collection": false
+                                    },
+                                    "leafState": "1231231231",
+                                    "previousLeafState": "1231231231",
+                                    "message": [],
+                                    "values": [],
+                                    "labels": [
+                                        {
+                                            "locale": "en-US",
+                                            "text": "Telephone"
+                                        }
+                                    ],
+                                    "elemLabels": {}
+                                },
+                                {
+                                    "enabled": true,
+                                    "visible": true,
+                                    "activeValidationGroups": [],
+                                    "collectionParams": [],
+                                    "configId": "3453",
+                                    "path": "/ownerview/vpOwnerInfo/vtOwnerInfo/vsOwnerInfo/vcdOwnerInfo/vcdbOwner/caseStatusDate",
+                                    "type": {},
+                                    "leafState": "2018-09-04T20:47:18.000Z",
+                                    "message": [],
+                                    "values": [],
+                                    "labels": [
+                                        {
+                                            "locale": "en-US",
+                                            "text": "Case Status Date"
+                                        }
+                                    ],
+                                    "elemLabels": {}
+                                },
+                                {
+                                    "enabled": true,
+                                    "visible": true,
+                                    "activeValidationGroups": [],
+                                    "collectionParams": [],
+                                    "configId": "3454",
+                                    "path": "/ownerview/vpOwnerInfo/vtOwnerInfo/vsOwnerInfo/vcdOwnerInfo/vcdbOwner/caseStatusDate1",
+                                    "type": {},
+                                    "leafState": null,
+                                    "message": [],
+                                    "values": [],
+                                    "labels": [
+                                        {
+                                            "locale": "en-US",
+                                            "text": "Case Status Date"
+                                        }
+                                    ],
+                                    "elemLabels": {}
+                                }
+                            ]
+                        }
+                    },
+                    "message": [],
+                    "values": [],
+                    "labels": [],
+                    "elemLabels": {}
+                }
+            ]
+        }
+    },
+    "message": [],
+    "values": [],
+    "labels": [
+        {
+            "locale": "en-US",
+            "text": "testing card details label"
+        }
+    ],
+    "elemLabels": {}
+};
 
 describe('CardDetailsComponent', () => {
 
@@ -112,11 +743,13 @@ describe('CardDetailsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CardDetailsComponent);
     hostComponent = fixture.debugElement.componentInstance;
-    hostComponent.element = element;
+    hostComponent.element = element1 as Param;    
     pageService = TestBed.get(PageService);
   });
 
   it('should create the CardDetailsComponent',async(() => {
+      console.log('this.hostComponent.element--122--dup', hostComponent.element);
+      
     expect(hostComponent).toBeTruthy();
   }));
 
@@ -164,6 +797,8 @@ describe('CardDetailsComponent', () => {
   it('Label should be created on providing the element.labelconfig and display the value provided', async(() => {
     fixture.detectChanges();
     const debugElement = fixture.debugElement;
+    console.log('debugElement-169', debugElement);
+    
   }));
 
   it('Label should not be created on if element.labelconfig is empty', async(() => {
@@ -209,11 +844,16 @@ describe('CardDetailsComponent', () => {
   it('Paragraph should be created if element.type.model.params[0].type.model.params[0].config?.uiStyles?.attributes?.alias === Paragraph', async(() => {
     fixture.detectChanges();
     const debugElement = fixture.debugElement;
+    const paragraphEle = debugElement.query(By.css('nm-paragraph'));
+    expect(paragraphEle.name).toEqual('nm-paragraph');
   }));
 
   it('Paragraph should not be created if element.type.model.params[0].type.model.params[0].config?.uiStyles?.attributes?.alias !== Paragraph', async(() => {
+    hostComponent.element.type.model.params[0].type.model.params[2].config.uiStyles.attributes.alias = '';
     fixture.detectChanges();
     const debugElement = fixture.debugElement;
+    const paragraphEle = debugElement.query(By.css('nm-paragraph'));
+    expect(paragraphEle).toBeFalsy();
   }));
 
   it('card-details-field should be created if element.type.model.params[0].type.model.params[0].config?.uiStyles?.attributes?.alias === FieldValue', async(() => {
@@ -229,11 +869,16 @@ describe('CardDetailsComponent', () => {
   it('StaticText in card details body should be created if element.type.model.params[0].type.model.params[0].config?.uiStyles?.attributes?.alias === StaticText', async(() => {
     fixture.detectChanges();
     const debugElement = fixture.debugElement;
+    const staticTextEle = debugElement.query(By.css('nm-static-text'));
+    expect(staticTextEle.name).toEqual('nm-static-text');
   }));
 
   it('StaticText in card details body should not be created if element.type.model.params[0].type.model.params[0].config?.uiStyles?.attributes?.alias !== StaticText', async(() => {
+    hostComponent.element.type.model.params[0].type.model.params[0].config.uiStyles.attributes.alias = '';
     fixture.detectChanges();
     const debugElement = fixture.debugElement;
+    const staticTextEle = debugElement.query(By.css('nm-static-text'));
+    expect(staticTextEle).toBeFalsy();
   }));
 
   it('Paragraph in card details body should be created if element.type.model.params[0].type.model.params[0].config?.uiStyles?.attributes?.alias === Paragraph', async(() => {
@@ -259,11 +904,16 @@ describe('CardDetailsComponent', () => {
   it('CardDetailsField in card details body should be created if element.type.model.params[0].type.model.params[0].config?.uiStyles?.attributes?.alias === CardDetailsField  ', async(() => {
     fixture.detectChanges();
     const debugElement = fixture.debugElement;
+    const CardDetailsFieldEle = debugElement.query(By.css('nm-card-details-field'));
+    expect(CardDetailsFieldEle.name).toEqual('nm-card-details-field');
   }));
 
   it('CardDetailsField in card details body should not be created if element.type.model.params[0].type.model.params[0].config?.uiStyles?.attributes?.alias !== CardDetailsField', async(() => {
+    hostComponent.element.type.model.params[0].type.model.params[1].config.uiStyles.attributes.alias = '';
     fixture.detectChanges();
     const debugElement = fixture.debugElement;
+    const CardDetailsFieldEle = debugElement.query(By.css('nm-card-details-field'));
+    expect(CardDetailsFieldEle).toBeFalsy;
   }));
 
   it('Link should be created if element.type.model.params[0].type.model.params[0].config?.uiStyles?.isLink is valid', async(() => {
@@ -279,164 +929,3 @@ describe('CardDetailsComponent', () => {
 
 });
 
-const element: any = {
-  "config": {
-      "active": false,
-      "required": false,
-      "id": "3980",
-      "code": "vcdOwnerInfo",
-      "validations": null,
-      "uiNatures": [],
-      "uiStyles": {
-          "isLink": false,
-          "isHidden": false,
-          "name": "ViewConfig.CardDetail",
-          "attributes": {
-              "hidden": false,
-              "readOnly": false,
-              "submitButton": true,
-              "showName": true,
-              "pageSize": 25,
-              "browserBack": false,
-              "showAsLink": false,
-              "border": false,
-              "cssClass": "contentBox right-gutter bg-alternate mt-0",
-              "draggable": false,
-              "expandable": true,
-              "editable": false,
-              "modelPath": "",
-              "alias": "CardDetail",
-              "imgSrc": ""
-          }
-      },
-      "type": {
-          "collection": false,
-          "nested": true,
-          "name": "VPOwnerInfo.VCDOwnerInfo",
-          "model": {
-              "paramConfigIds": [
-                  "3982",
-                  "3992"
-              ]
-          }
-      }
-  },
-  "enabled": true,
-  "visible": true,
-  "activeValidationGroups": [],
-  "collectionParams": [],
-  "configId": "3980",
-  "path": "/ownerview/vpOwnerInfo/vtOwnerInfo/vsOwnerInfo/vcdOwnerInfo",
-  "type": {
-      "model": {
-          "params": [
-              {
-                  "enabled": true,
-                  "visible": true,
-                  "activeValidationGroups": [],
-                  "collectionParams": [],
-                  "configId": "3982",
-                  "path": "/ownerview/vpOwnerInfo/vtOwnerInfo/vsOwnerInfo/vcdOwnerInfo/vcdbOwner",
-                  "type": {
-                      "model": {
-                          "params": [                          ]
-                      }
-                  },
-                  "message": [],
-                  "values": [],
-                  "labels": [],
-                  "elemLabels": {}
-              },
-              {
-                  "enabled": true,
-                  "visible": true,
-                  "activeValidationGroups": [],
-                  "collectionParams": [],
-                  "configId": "3992",
-                  "path": "/ownerview/vpOwnerInfo/vtOwnerInfo/vsOwnerInfo/vcdOwnerInfo/vcdbOwner1",
-                  "type": {
-                      "model": {
-                          "params": [
-                              {
-                                  "enabled": true,
-                                  "visible": true,
-                                  "activeValidationGroups": [],
-                                  "collectionParams": [],
-                                  "configId": "3994",
-                                  "path": "/ownerview/vpOwnerInfo/vtOwnerInfo/vsOwnerInfo/vcdOwnerInfo/vcdbOwner1/vbgDefault1",
-                                  "type": {
-                                      "model": {
-                                          "params": [
-                                              {
-                                                  "enabled": true,
-                                                  "visible": true,
-                                                  "activeValidationGroups": [],
-                                                  "collectionParams": [],
-                                                  "configId": "3996",
-                                                  "path": "/ownerview/vpOwnerInfo/vtOwnerInfo/vsOwnerInfo/vcdOwnerInfo/vcdbOwner1/vbgDefault1/submit",
-                                                  "type": {
-                                                      "nested": false,
-                                                      "name": "string",
-                                                      "collection": false
-                                                  },
-                                                  "message": [],
-                                                  "values": [],
-                                                  "labels": [
-                                                      {
-                                                          "locale": "en-US",
-                                                          "text": "Submit"
-                                                      }
-                                                  ],
-                                                  "elemLabels": {}
-                                              },
-                                              {
-                                                  "enabled": true,
-                                                  "visible": true,
-                                                  "activeValidationGroups": [],
-                                                  "collectionParams": [],
-                                                  "configId": "3997",
-                                                  "path": "/ownerview/vpOwnerInfo/vtOwnerInfo/vsOwnerInfo/vcdOwnerInfo/vcdbOwner1/vbgDefault1/back",
-                                                  "type": {
-                                                      "nested": false,
-                                                      "name": "string",
-                                                      "collection": false
-                                                  },
-                                                  "message": [],
-                                                  "values": [],
-                                                  "labels": [
-                                                      {
-                                                          "locale": "en-US",
-                                                          "text": "Back"
-                                                      }
-                                                  ],
-                                                  "elemLabels": {}
-                                              }
-                                          ]
-                                      }
-                                  },
-                                  "message": [],
-                                  "values": [],
-                                  "labels": [],
-                                  "elemLabels": {}
-                              }
-                          ]
-                      }
-                  },
-                  "message": [],
-                  "values": [],
-                  "labels": [],
-                  "elemLabels": {}
-              }
-          ]
-      }
-  },
-  "message": [],
-  "values": [],
-  "labels": [
-      {
-          "locale": "en-US",
-          "text": "testing card details label"
-      }
-  ],
-  "elemLabels": {}
-};

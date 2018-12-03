@@ -237,14 +237,12 @@ describe('Modal', () => {
     it('should create the Modal', async(() => {
         // fixture.detectChanges();
         fixture.whenStable().then(() => {
-            console.log('hostComponent.element', hostComponent.element);
             
             expect(hostComponent).toBeTruthy();
         });
     }));
 
     it('width should be 500 for small size', async(() => {
-        console.log('here is the error...modal', hostComponent.element);
         // fixture.detectChanges();
         // fixture.whenStable().then(() => {
                 // hostComponent.element.config.uiStyles.attributes.width = 'small';

@@ -12,7 +12,9 @@
                 [required]="false">
             </nm-input-label>
             <!--<label class="" *ngIf="element.config.uiStyles.attributes.showName==true">{{label}}</label>-->
+            <!-- // if value is present of not present -->
             <ng-template [ngIf]="value">
+                <!-- // check both scnerios date format anf if not date format -->
                 <div class="textWrapBreakWord">{{value | dateTimeFormat: element.config?.uiStyles?.attributes?.datePattern : element.config.type.name }}&nbsp;</div>
             </ng-template>
             <ng-template [ngIf]="!value">
