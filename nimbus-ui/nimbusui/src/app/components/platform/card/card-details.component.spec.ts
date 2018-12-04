@@ -560,6 +560,81 @@ const element1: any = {
                                     "elemLabels": {}
                                 },
                                 {
+                                    "config": {
+                                        "active": false,
+                                        "required": false,
+                                        "id": "1314",
+                                        "code": "fgCardBodyCase1",
+                                        "validations": null,
+                                        "uiNatures": [],
+                                        "uiStyles": {
+                                            "isLink": false,
+                                            "isHidden": false,
+                                            "name": "ViewConfig.FieldValueGroup",
+                                            "attributes": {
+                                                "hidden": false,
+                                                "readOnly": false,
+                                                "submitButton": true,
+                                                "showName": true,
+                                                "pageSize": 25,
+                                                "browserBack": false,
+                                                "showAsLink": false,
+                                                "cssClass": "",
+                                                "alias": "FieldValueGroup",
+                                                "cols": "5"
+                                            }
+                                        },
+                                        "type": {
+                                            "collection": false,
+                                            "nested": true,
+                                            "name": "VPOwnerInfo.FieldGroup_CardBodyCase1",
+                                            "model": {
+                                                "paramConfigIds": [
+                                                    "1316"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "enabled": true,
+                                    "visible": true,
+                                    "activeValidationGroups": [],
+                                    "collectionParams": [],
+                                    "configId": "1314",
+                                    "path": "/ownerview/vpOwnerInfo/vtOwnerInfo/vsOwnerInfo/vcdOwnerInfo/vcdbOwner/fgCardBodyCase1",
+                                    "type": {
+                                        "model": {
+                                            "params": [
+                                                {
+                                                    "enabled": true,
+                                                    "visible": true,
+                                                    "activeValidationGroups": [],
+                                                    "collectionParams": [],
+                                                    "configId": "1316",
+                                                    "path": "/ownerview/vpOwnerInfo/vtOwnerInfo/vsOwnerInfo/vcdOwnerInfo/vcdbOwner/fgCardBodyCase1/id",
+                                                    "type": {
+                                                        "nested": false,
+                                                        "name": "string",
+                                                        "collection": false
+                                                    },
+                                                    "message": [],
+                                                    "values": [],
+                                                    "labels": [
+                                                        {
+                                                            "locale": "en-US",
+                                                            "text": "Case ID"
+                                                        }
+                                                    ],
+                                                    "elemLabels": {}
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "message": [],
+                                    "values": [],
+                                    "labels": [],
+                                    "elemLabels": {}
+                                },
+                                {
                                     "enabled": true,
                                     "visible": true,
                                     "activeValidationGroups": [],
@@ -849,11 +924,8 @@ describe('CardDetailsComponent', () => {
   }));
 
   it('Paragraph should not be created if element.type.model.params[0].type.model.params[0].config?.uiStyles?.attributes?.alias !== Paragraph', async(() => {
-    hostComponent.element.type.model.params[0].type.model.params[2].config.uiStyles.attributes.alias = '';
     fixture.detectChanges();
     const debugElement = fixture.debugElement;
-    const paragraphEle = debugElement.query(By.css('nm-paragraph'));
-    expect(paragraphEle).toBeFalsy();
   }));
 
   it('card-details-field should be created if element.type.model.params[0].type.model.params[0].config?.uiStyles?.attributes?.alias === FieldValue', async(() => {
@@ -884,21 +956,31 @@ describe('CardDetailsComponent', () => {
   it('Paragraph in card details body should be created if element.type.model.params[0].type.model.params[0].config?.uiStyles?.attributes?.alias === Paragraph', async(() => {
     fixture.detectChanges();
     const debugElement = fixture.debugElement;
+    const paragraphEle = debugElement.query(By.css('nm-paragraph'));
+    expect(paragraphEle.name).toEqual('nm-paragraph');
   }));
 
   it('Paragraph in card details body should not be created if element.type.model.params[0].type.model.params[0].config?.uiStyles?.attributes?.alias !== Paragraph', async(() => {
+    hostComponent.element.type.model.params[0].type.model.params[2].config.uiStyles.attributes.alias = '';
     fixture.detectChanges();
     const debugElement = fixture.debugElement;
+    const paragraphEle = debugElement.query(By.css('nm-paragraph'));
+    expect(paragraphEle).toBeFalsy();
   }));
 
   it('CardDetailsFieldGroup in card details body should be created if element.type.model.params[0].type.model.params[0].config?.uiStyles?.attributes?.alias === CardDetailsFieldGroup', async(() => {
     fixture.detectChanges();
     const debugElement = fixture.debugElement;
+    const CardDetailsFieldGroupEle = debugElement.query(By.css('nm-card-details-field-group'));
+    expect(CardDetailsFieldGroupEle.name).toEqual('nm-card-details-field-group');
   }));
 
   it('CardDetailsFieldGroup in card details body should not be created if element.type.model.params[0].type.model.params[0].config?.uiStyles?.attributes?.alias !== CardDetailsFieldGroup', async(() => {
+      hostComponent.element.type.model.params[0].type.model.params[3].config.uiStyles.attributes.alias = '';
     fixture.detectChanges();
     const debugElement = fixture.debugElement;
+    const CardDetailsFieldGroupEle = debugElement.query(By.css('nm-card-details-field-group'));
+    expect(CardDetailsFieldGroupEle).toBeFalsy();
   }));
 
   it('CardDetailsField in card details body should be created if element.type.model.params[0].type.model.params[0].config?.uiStyles?.attributes?.alias === CardDetailsField  ', async(() => {
