@@ -18,6 +18,8 @@
                 </ng-template>
                 <!-- FieldValue-->
                 <ng-template [ngIf]="field.config?.uiStyles?.attributes?.alias == componentTypes.fieldValue.toString()">
+                    <!-- card header field
+                    field.leafState: {{field.leafState}} -->
                     <nm-card-details-field [element]="field" [(value)]="field.leafState"></nm-card-details-field>
                 </ng-template>
             </span>

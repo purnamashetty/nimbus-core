@@ -82,7 +82,7 @@ export class BaseElement {
      * and set it into this instance's labelConfig.
      * @param param The param for which to load label content for.	
      */	
-    protected loadLabelConfig(param: Param): void {	
+    protected loadLabelConfig(param: Param): void {	        
         this.labelConfig = this.wcs.findLabelContent(param);	
     }
 
@@ -186,7 +186,7 @@ export class BaseElement {
     /**
      * Determine if the label for this element is empty or not.
      */
-    public get isLabelEmpty(): boolean {
+    public get isLabelEmpty(): boolean {        
         if (this.label) {
             return this.label.trim().length === 0;
         }

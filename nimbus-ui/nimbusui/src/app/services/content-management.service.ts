@@ -57,7 +57,7 @@ export class WebContentSvc {
      * @param labelConfigs the label configs to search through
      * @param defaultLabel the default label to use if a label config is not found
      */
-    findLabelContentFromConfig(labelConfigs : LabelConfig[], defaultLabel?: string): LabelConfig {
+    findLabelContentFromConfig(labelConfigs : LabelConfig[], defaultLabel?: string): LabelConfig {        
         let labelContent: LabelConfig = new LabelConfig();
         if (labelConfigs != null && labelConfigs.length > 0) {
             let labelConfig = labelConfigs.find(c => c.locale == ServiceConstants.LOCALE_LANGUAGE);

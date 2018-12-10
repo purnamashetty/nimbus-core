@@ -78,5 +78,33 @@ export class CardDetailsFieldGroupComponent extends BaseElement {
         return componentClass;
     }
 
+    ngOnInit() {
+        // console.log('this.element-82', this.element.type.model.params);
+        // console.log('this.element-83', this.stringify(this.element.type.model.params[0]));
+        // console.log('this.element-84', this.stringify(this.element.type.model.params[0].config));        
+    }
+
+    stringify(o) {
+        let cache = [];
+        return JSON.stringify(o, function(key, value) {
+            if (typeof value === 'object' && value !== null) {
+                if (cache.indexOf(value) !== -1) {
+                    // Duplicate reference found
+                    try {
+                        // If this value does not reference a parent it can be deduped
+                        return JSON.parse(JSON.stringify(value));
+                    } catch (error) {
+                        // discard key if value cannot be deduped
+                        return;
+                    }
+                }
+                // Store value in our collection
+                cache.push(value);
+            }
+            return value;
+        });
+        cache = null;
+    }
+
 }
 
