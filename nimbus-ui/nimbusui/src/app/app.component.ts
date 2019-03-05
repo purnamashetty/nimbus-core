@@ -18,6 +18,10 @@
 'use strict';
 import { Component, ViewEncapsulation } from '@angular/core';
 import { HostListener } from '@angular/core';
+import { LayoutService } from './services/layout.service';
+import { Store } from '@ngrx/store';
+import { AppState } from './reducers';
+import { RequestLayout } from './actions';
 
 /**
  * \@author Dinakar.Meda
@@ -36,7 +40,9 @@ import { HostListener } from '@angular/core';
 export class AppComponent {
     navIsFixed: boolean;
 
-    constructor() {
+    constructor(
+        private layoutService: LayoutService,
+        private store: Store<AppState>) {
     }
 
     @HostListener("window:scroll", [])
@@ -65,6 +71,7 @@ export class AppComponent {
     }
 
     ngOnInit() {
+        this.store.dispatch(new RequestLayout());
     }
 
 }

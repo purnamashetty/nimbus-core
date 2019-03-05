@@ -24,6 +24,9 @@ import { LoggerService } from '../../services/logger.service';
 import { LayoutService } from '../../services/layout.service';
 import { trigger, state, style, transition, animate, keyframes } from '@angular/animations';
 import { HostListener } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../reducers';
+import { Layout } from '../../model/menu-meta.interface';
 
 /**
  * \@author Vivek Kamineni
@@ -71,7 +74,7 @@ export class ActionTray extends BaseElement {
 
     @ViewChildren('actionButton') actionButtons: QueryList<any>;
 
-    constructor(private wcsvc: WebContentSvc, private pageService: PageService, private _logger: LoggerService, private layoutSvc: LayoutService) {
+    constructor(private wcsvc: WebContentSvc, private pageService: PageService, private _logger: LoggerService, private layoutSvc: LayoutService, private store: Store<AppState>) {
         super(wcsvc);
     }
 
@@ -83,14 +86,13 @@ export class ActionTray extends BaseElement {
     }
 
     ngOnInit() {
-        this.layoutSvc.layout$.subscribe(data => {
-            if (data.actiontray) {
-                this.showTray = data.actiontray.type.model.params.some(
-                    item =>
-                        item.visible === true
-                )            
+        this.store.subscribe((data) => {
+            const layout: Layout = data.layout;
+            if (layout && layout.actiontray) {
+                this.showTray = layout.actiontray.type.model.params.some(
+                    item => item.visible === true
+                )
             }
-
         });
     }
 

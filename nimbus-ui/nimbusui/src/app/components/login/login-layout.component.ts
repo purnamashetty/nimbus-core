@@ -20,6 +20,8 @@ import { Component, OnInit } from '@angular/core';
 import { AppBranding, Layout, FooterConfig } from '../../model/menu-meta.interface';
 import { Param } from '../../shared/param-state';
 import { LayoutService } from '../../services/layout.service';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../reducers';
 /**
  * \@author Dinakar.Meda
  * \@whatItDoes 
@@ -37,7 +39,7 @@ export class LoginLayoutCmp implements OnInit {
     public branding: AppBranding;
     public footer: FooterConfig;
 
-    constructor(private layoutSvc: LayoutService) {
+    constructor(private layoutSvc: LayoutService, private store: Store<AppState>) {
 
     }
 
@@ -45,14 +47,14 @@ export class LoginLayoutCmp implements OnInit {
         // initialize
         this.branding = {} as AppBranding;
 
-        this.layoutSvc.layout$.subscribe(
-            data => {
-                let layout: Layout = data;
+        this.store.subscribe((data) => {
+            const layout: Layout = data.layout;
+            if (layout) {
                 this.branding = layout.topBar.branding;
                 this.footer = layout.footer;
                 this.topMenuItems = layout.topBar.headerMenus;
             }
-        );
+        });
         this.layoutSvc.getLayout(LoginLayoutCmp.LAYOUT);
     }
 }

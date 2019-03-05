@@ -84,7 +84,7 @@ export class LoggerService {
         if (this.promiseDone) {
             this.JL().log(logLevel,logMessage);
         } else {
-            console.log('Logger not initialized, printing to console. ' + 'For session id '  + sessionStorage.get(ServiceConstants.SESSIONKEY) + ' : ' + logMessage);
+            console.log('Logger not initialized, printing to console. ' + 'For session id '  + sessionStorage.getItem(ServiceConstants.SESSIONKEY) + ' : ' + logMessage);
         }
     }
 

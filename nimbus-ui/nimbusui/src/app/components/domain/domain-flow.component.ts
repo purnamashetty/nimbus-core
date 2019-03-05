@@ -28,6 +28,8 @@ import { MenuItem } from '../../shared/menuitem';
 import { Message } from './../../shared/message';
 import { ViewRoot } from './../../shared/app-config.interface';
 import { NmMessageService } from './../../services/toastmessage.service';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../reducers';
 /**
  * \@author Dinakar.Meda
  * \@whatItDoes 
@@ -54,27 +56,33 @@ export class DomainFlowCmp {
     items: MenuItem[];
     routeParams: any;
 
-    constructor(private _pageSvc: PageService, private layoutSvc: LayoutService,
-            private _route: ActivatedRoute, private _router: Router, private _logger: LoggerService, private _messageservice: NmMessageService) {
+    constructor(
+        private _pageSvc: PageService, 
+        private layoutSvc: LayoutService,
+        private _route: ActivatedRoute, 
+        private _router: Router, 
+        private _logger: LoggerService, 
+        private _messageservice: NmMessageService,
+        private store: Store<AppState>) {
 
-        this.layoutSvc.layout$.subscribe(
-            data => {
-                let layout: Layout = data;
-                this.fixLayout = layout['fixLayout'];
-                this.accordions = layout.topBar.accordions;
-                this.items = layout.menu;
-                this.topMenuItems = layout.topBar.headerMenus;
-                this.actionTray = layout.actiontray;
-                this.modalItems = layout.modalList;
-               
-                this._logger.debug('domain flow component received layout from layout$ subject');
-                if(this.hasLayout && this.accordions != null && this.accordions !== undefined) {
-                    this.getDocument().getElementById('main-content').classList.add('withInfoBar');
+            this.store.subscribe((data) => {
+                const layout: Layout = data.layout;
+                if (layout) {
+                    this.fixLayout = layout['fixLayout'];
+                    this.accordions = layout.topBar.accordions;
+                    this.items = layout.menu;
+                    this.topMenuItems = layout.topBar.headerMenus;
+                    this.actionTray = layout.actiontray;
+                    this.modalItems = layout.modalList;
+                   
+                    this._logger.debug('domain flow component received layout from layout$ subject');
+                    if(this.hasLayout && this.accordions != null && this.accordions !== undefined) {
+                        this.getDocument().getElementById('main-content').classList.add('withInfoBar');
+                    }
+    
+                    this.setLayoutScroll();
                 }
-
-                this.setLayoutScroll();
-            }
-        );
+            });
 
         this._pageSvc.config$.subscribe(result => {
             let page: Page = result;

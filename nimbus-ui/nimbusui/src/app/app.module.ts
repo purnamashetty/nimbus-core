@@ -164,6 +164,12 @@ import { FormErrorMessage } from './components/platform/form-error-message.compo
 import { EventPropagationDirective } from './components/platform/form/elements/event-propagation.directive';
 import { NmChart } from './components/platform/charts/chart.component';
 import { NmMessageService } from './services/toastmessage.service';
+import { StoreModule } from '@ngrx/store';
+import { reducers, metaReducers } from './reducers';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
+import { EffectsModule } from '@ngrx/effects';
+import { LayoutEffects } from './effects/layout.effects';
 /**
  * \@author Dinakar.Meda
  * \@author Sandeep.Mantha
@@ -217,7 +223,10 @@ export function init_app(appinitservice: AppInitService) {
         ToastModule,
         InputSwitchModule,
         ChartModule,
-        EditorModule
+        EditorModule,
+        StoreModule.forRoot(reducers, { metaReducers }),
+        !environment.production ? StoreDevtoolsModule.instrument() : [],
+        EffectsModule.forRoot([LayoutEffects])
     ],
     declarations: [ AppComponent, STOMPStatusComponent, FlowWrapper, PageContent, PageNotfoundComponent, StaticText,
         Tile, Section, Header, Form, FormElement, InputText, InputMaskComp, Tab, ComboBox, RadioButton, Signature, CheckBoxGroup,

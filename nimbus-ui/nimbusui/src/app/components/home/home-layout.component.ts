@@ -33,6 +33,8 @@ import { MenuItem } from 'primeng/primeng';
 import { LoggerService } from '../../services/logger.service';
 import { WebContentSvc } from '../../services/content-management.service';
 import { LabelConfig } from './../../shared/param-config';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../reducers';
 /**
  * \@author Dinakar.Meda
  * \@whatItDoes 
@@ -71,7 +73,8 @@ export class HomeLayoutCmp {
         private _router: Router,
         private _logger: LoggerService,
         private wcs: WebContentSvc,
-        private titleService: Title) {
+        private titleService: Title,
+        private store: Store<AppState>) {
         
     }
 
@@ -153,13 +156,11 @@ export class HomeLayoutCmp {
         this.themes.push({link:'styles/vendor/anthem.blue.theme.css',label:'Blue Theme'});
         this.themes.push({link:'styles/vendor/anthem.black.theme.css',label:'Black Theme'});
 
-        this.layoutSvc.layout$.subscribe(
-            data => {
-                let layout: Layout = data;
+        this.store.subscribe((data) => {
+            let layout: Layout = data.layout;
+            if (layout) {
                 this._logger.debug('home layout component received layout from layout$ subject');
                 if(layout != null ) {
-                    
-
                     if(layout.topBar != null && layout.topBar.branding != null) {
                         this.branding = layout.topBar.branding;
                         if (this.branding.title) {
@@ -173,7 +174,7 @@ export class HomeLayoutCmp {
                 }
                 //this._router.navigate([this.body['defaultFlow']], { relativeTo: this._route });
             }
-        );
+        });
         if(this._route.data['value']['layout'] != null) {
             this.layoutSvc.getLayout(this._route.data['value']['layout']);
         }
