@@ -16,12 +16,13 @@
  */
 'use strict';
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AppBranding, Layout, FooterConfig } from '../../model/menu-meta.interface';
 import { Param } from '../../shared/param-state';
 import { LayoutService } from '../../services/layout.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../reducers';
+import { Subscription } from 'rxjs';
 /**
  * \@author Dinakar.Meda
  * \@whatItDoes 
@@ -33,11 +34,12 @@ import { AppState } from '../../reducers';
     templateUrl: './login-layout.component.html'
 })
 
-export class LoginLayoutCmp implements OnInit {
+export class LoginLayoutCmp implements OnInit, OnDestroy {
     private static LAYOUT: string = 'loginlayout';
     public topMenuItems: Param[];
     public branding: AppBranding;
     public footer: FooterConfig;
+    storeSubscription: Subscription;
 
     constructor(private layoutSvc: LayoutService, private store: Store<AppState>) {
 
@@ -47,8 +49,8 @@ export class LoginLayoutCmp implements OnInit {
         // initialize
         this.branding = {} as AppBranding;
 
-        this.store.subscribe((data) => {
-            const layout: Layout = data.layout;
+        this.storeSubscription = this.store.subscribe((data) => {
+            const layout: Layout = data['layout$'];
             if (layout) {
                 this.branding = layout.topBar.branding;
                 this.footer = layout.footer;
@@ -56,5 +58,9 @@ export class LoginLayoutCmp implements OnInit {
             }
         });
         this.layoutSvc.getLayout(LoginLayoutCmp.LAYOUT);
+    }
+
+    ngOnDestroy() {
+        this.storeSubscription.unsubscribe();
     }
 }

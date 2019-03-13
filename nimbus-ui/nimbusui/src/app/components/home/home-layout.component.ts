@@ -18,9 +18,9 @@ import { ParamUtils } from './../../shared/param-utils';
 'use strict';
 
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Message } from 'stompjs';
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { LayoutService } from '../../services/layout.service';
 import { AppBranding, Layout, LinkConfig, FooterConfig } from '../../model/menu-meta.interface';
@@ -48,7 +48,7 @@ import { AppState } from '../../reducers';
     // providers: [ STOMPService ],
 })
 
-export class HomeLayoutCmp {
+export class HomeLayoutCmp implements OnDestroy {
     public leftMenuItems: LinkConfig[];
     public topMenuItems: Param[];
     public branding: AppBranding;
@@ -64,6 +64,7 @@ export class HomeLayoutCmp {
     public messages: Observable<Message>;
     public organization: Param;
     private _activeTheme = '';
+    storeSubscription: Subscription;
 
     constructor(
         private _authenticationService: AuthenticationService,
@@ -157,8 +158,8 @@ export class HomeLayoutCmp {
         this.themes.push({link:'styles/vendor/anthem.blue.theme.css',label:'Blue Theme'});
         this.themes.push({link:'styles/vendor/anthem.black.theme.css',label:'Black Theme'});
 
-        this.store.subscribe((data) => {
-            let layout: Layout = data.layout;
+        this.storeSubscription = this.store.subscribe((data) => {
+            const layout: Layout = data['layout$'];
             if (layout) {
                 this._logger.debug('home layout component received layout from layout$ subject');
                 if(layout != null ) {
@@ -181,6 +182,10 @@ export class HomeLayoutCmp {
         }
 
         //        this.initWebSocket();
+    }
+
+    ngOnDestroy() {
+        this.storeSubscription.unsubscribe();
     }
 
 }

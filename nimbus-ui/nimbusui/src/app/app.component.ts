@@ -19,9 +19,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { HostListener } from '@angular/core';
 import { LayoutService } from './services/layout.service';
-import { Store } from '@ngrx/store';
-import { AppState } from './reducers';
-import { RequestLayout } from './actions';
 
 /**
  * \@author Dinakar.Meda
@@ -40,9 +37,7 @@ import { RequestLayout } from './actions';
 export class AppComponent {
     navIsFixed: boolean;
 
-    constructor(
-        private layoutService: LayoutService,
-        private store: Store<AppState>) {
+    constructor(private layoutService: LayoutService) {
     }
 
     @HostListener("window:scroll", [])
@@ -68,10 +63,6 @@ export class AppComponent {
         function smoothscroll() { 
             document.getElementById('page-content').scrollTop = 0;
         })();
-    }
-
-    ngOnInit() {
-        this.store.dispatch(new RequestLayout());
     }
 
 }

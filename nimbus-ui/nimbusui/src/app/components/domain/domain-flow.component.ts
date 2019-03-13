@@ -17,7 +17,7 @@
  */
 'use strict';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnDestroy } from '@angular/core';
 import { LayoutService } from '../../services/layout.service';
 import { PageService } from '../../services/page.service';
 import { Layout, LinkConfig } from '../../model/menu-meta.interface';
@@ -30,6 +30,7 @@ import { ViewRoot } from './../../shared/app-config.interface';
 import { NmMessageService } from './../../services/toastmessage.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../reducers';
+import { Subscription } from 'rxjs';
 /**
  * \@author Dinakar.Meda
  * \@whatItDoes 
@@ -42,7 +43,7 @@ import { AppState } from '../../reducers';
     providers: [ LayoutService ]
 })
 
-export class DomainFlowCmp {
+export class DomainFlowCmp implements OnDestroy {
     public hasLayout: boolean = true;
     public fixLayout: boolean = false;
     public infoClass: string = '';
@@ -55,6 +56,7 @@ export class DomainFlowCmp {
     public messages: Message[];
     items: MenuItem[];
     routeParams: any;
+    storeSubscription: Subscription;
 
     constructor(
         private _pageSvc: PageService, 
@@ -65,8 +67,8 @@ export class DomainFlowCmp {
         private _messageservice: NmMessageService,
         private store: Store<AppState>) {
 
-            this.store.subscribe((data) => {
-                const layout: Layout = data.layout;
+            this.storeSubscription = this.store.subscribe((data) => {
+                const layout: Layout = data['layout$'];
                 if (layout) {
                     this.fixLayout = layout['fixLayout'];
                     this.accordions = layout.topBar.accordions;
@@ -125,7 +127,9 @@ export class DomainFlowCmp {
         } else {
             this.getDocument().body.classList.remove("browserFixed");
             this.getDocument().body.classList.add("browserScroll");
-            this.getDocument().getElementById('page-content').style.height = 'auto';
+            if (this.getDocument().getElementById('page-content')) {
+                this.getDocument().getElementById('page-content').style.height = 'auto';
+            }
         }
     }
 
@@ -163,6 +167,10 @@ export class DomainFlowCmp {
      */
     ngAfterViewChecked() {
         this.resetInfoCardScrollHeight();
+    }
+
+    ngOnDestroy() {
+        this.storeSubscription.unsubscribe();
     }
 
     /** 

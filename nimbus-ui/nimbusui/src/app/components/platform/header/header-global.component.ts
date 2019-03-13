@@ -120,7 +120,7 @@ export class HeaderGlobal {
     }
 
     get headerImageURL() {
-        if (!this.branding || !this.branding.logo.config || !this.branding.logo.config.uiStyles) {
+        if (!this.branding || !this.branding.logo || !this.branding.logo.config || !this.branding.logo.config.uiStyles) {
             return undefined;
         }
         let imgSrc = this.branding.logo.config.uiStyles.attributes.imgSrc;

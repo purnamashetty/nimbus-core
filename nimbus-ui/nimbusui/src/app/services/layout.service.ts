@@ -38,7 +38,7 @@ import { Action, Behavior } from './../shared/command.enum';
 import { SessionStoreService, CUSTOM_STORAGE } from './session.store';
 import { Store } from '@ngrx/store';
 import { AppState } from '../reducers';
-import { LoadLayout } from '../actions';
+import { LoadLayout$ } from '../actions';
 /**
  * \@author Dinakar.Meda
  * \@whatItDoes 
@@ -120,7 +120,7 @@ export class LayoutService {
         layout['modalList'] = this.getModalItems(pageParam.type.model);
         layout['actiontray'] = this.getActionTrayItems(pageParam.type.model);
         // Push the new menu into the Observable stream
-        this.store.dispatch(new LoadLayout({layout: layout}));
+        this.store.dispatch(new LoadLayout$({layout$: layout}));
     }
 
     private getFooterItems(layoutConfig: Model) {

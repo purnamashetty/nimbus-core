@@ -15,19 +15,19 @@ export interface LayoutState {
 
 export const initialLayoutState = {
   fixLayout: false,
-  topBar: 'any',
+  topBar: {},
   menu: [],
-  footer: 'any',
-  actiontray: 'any',
+  footer: {},
+  actiontray: {},
   modalList: []
 };
 
-export function layoutReducer(state: any, action: LayoutActions): LayoutState {
+export function layoutReducer(state: any = initialLayoutState, action: LayoutActions): LayoutState {
   
   switch (action.type) {
 
-    case LayoutActionTypes.LoadLayout:
-      return action.payload.layout;
+    case LayoutActionTypes.LoadLayout$:
+      return action.payload.layout$;
 
     default:
       return state;

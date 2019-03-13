@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 'use strict';
-import { Component, Input, QueryList, ViewChildren } from '@angular/core';
+import { Component, Input, QueryList, ViewChildren, OnDestroy } from '@angular/core';
 import { Param } from './../../shared/param-state';
 import { BaseElement } from './base-element.component';
 import { WebContentSvc } from '../../services/content-management.service';
@@ -27,6 +27,7 @@ import { HostListener } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../reducers';
 import { Layout } from '../../model/menu-meta.interface';
+import { Subscription } from 'rxjs';
 
 /**
  * \@author Vivek Kamineni
@@ -66,11 +67,12 @@ import { Layout } from '../../model/menu-meta.interface';
     ]
 })
 
-export class ActionTray extends BaseElement {
+export class ActionTray extends BaseElement implements OnDestroy {
 
     @Input() element: Param;
     showTray: boolean = true;
     state: string;
+    storeSubscription: Subscription;
 
     @ViewChildren('actionButton') actionButtons: QueryList<any>;
 
@@ -86,14 +88,18 @@ export class ActionTray extends BaseElement {
     }
 
     ngOnInit() {
-        this.store.subscribe((data) => {
-            const layout: Layout = data.layout;
+        this.storeSubscription = this.store.subscribe((data) => {
+            const layout: Layout = data['layout$'];
             if (layout && layout.actiontray) {
                 this.showTray = layout.actiontray.type.model.params.some(
                     item => item.visible === true
                 )
             }
         });
+    }
+
+    ngOnDestroy() {
+        this.storeSubscription.unsubscribe();
     }
 
     isTrayVisible(){
