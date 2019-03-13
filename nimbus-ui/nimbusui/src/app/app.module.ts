@@ -170,6 +170,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import * as fromLayout from './reducers/layout.reducer';
 import * as fromPrint from './reducers/print.reducer';
+import * as fromUploadFile from './reducers/upload-file.reducer';
 
 /**
  * \@author Dinakar.Meda
@@ -228,7 +229,8 @@ export function init_app(appinitservice: AppInitService) {
         StoreModule.forRoot(reducers, { metaReducers }),
         !environment.production ? StoreDevtoolsModule.instrument() : [],
         StoreModule.forFeature('layout$', fromLayout.layoutReducer),
-        StoreModule.forFeature('printClickUpdate$', fromPrint.printReducer)
+        StoreModule.forFeature('printClickUpdate$', fromPrint.printReducer),
+        StoreModule.forFeature('uploadFile', fromUploadFile.uploadFileReducer)
     ],
     declarations: [ AppComponent, STOMPStatusComponent, FlowWrapper, PageContent, PageNotfoundComponent, StaticText,
         Tile, Section, Header, Form, FormElement, InputText, InputMaskComp, Tab, ComboBox, RadioButton, Signature, CheckBoxGroup,

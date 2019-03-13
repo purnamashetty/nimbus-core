@@ -18,7 +18,7 @@
 
 import {
 	Component, Input, ViewChild, ViewEncapsulation,
-	ElementRef, ViewChildren, QueryList, forwardRef, ChangeDetectorRef
+	ElementRef, ViewChildren, QueryList, forwardRef, ChangeDetectorRef, OnDestroy
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
@@ -29,6 +29,10 @@ import { BaseElement } from '../base-element.component';
 import { WebContentSvc } from './../../../services/content-management.service';
 import { LoggerService } from './../../../services/logger.service';
 import { Message } from '../../../shared/message';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../reducers';
+import { Subscription } from 'rxjs';
+import { ResetUploadFileStatus } from '../../../actions/upload-file.actions';
 
 export const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
 	provide: NG_VALUE_ACCESSOR,
@@ -63,7 +67,7 @@ export const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
 	`
 })
 
-export class FileUploadComponent extends BaseElement implements ControlValueAccessor {
+export class FileUploadComponent extends BaseElement implements ControlValueAccessor, OnDestroy {
 
 	@Input() element: Param;
 	@Input() form: FormGroup;
@@ -71,9 +75,13 @@ export class FileUploadComponent extends BaseElement implements ControlValueAcce
 	selectedFiles: File[];
 	multipleFiles: boolean = false;
 	@ViewChild('pfu') pfu;
+	storeSubscription: Subscription;
 
-
-	constructor(private fileService: FileService, private _wcs: WebContentSvc, private logger: LoggerService) {
+	constructor(
+		private fileService: FileService, 
+		private _wcs: WebContentSvc, 
+		private logger: LoggerService,
+		private store: Store<AppState>) {
 		super(_wcs);
 	}
 
@@ -103,19 +111,21 @@ export class FileUploadComponent extends BaseElement implements ControlValueAcce
 		this.onTouched = fn;
 	}
 
-	ngOnInit() {
-
+	ngOnInit() {		
 		this.selectedFiles = [];
 		this.fileService.metaData = this.element.config.uiStyles.attributes.metaData;
-	
-		this.fileService.errorEmitter$.subscribe(data => {
+		this.storeSubscription = this.store.subscribe((data) => {
+			if (data['uploadFile']['error']) {
+				this.pfu.files = [];
+				this.element.message = [];
+				this.element.message.push(Message.createMessage("DANGER", "TOAST", "File Upload Failed", 10000, ''));
+				this.store.dispatch(new ResetUploadFileStatus());
+			}
+		});
+	}
 
-			this.pfu.files = [];
-			
-			this.element.message = [];
-			this.element.message.push(Message.createMessage("DANGER", "TOAST", "File Upload Failed", 10000, ''));
-			
-        });
+	ngOnDestroy() {
+		this.storeSubscription.unsubscribe();
 	}
 
 	addFiles(event) {

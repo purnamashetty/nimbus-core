@@ -23,6 +23,9 @@ import { HttpHeaders } from '@angular/common/http';
 import { RequestOptions, Request, RequestMethod } from '@angular/http';
 import { LoggerService } from './logger.service';
 import { FormGroup } from '@angular/forms';
+import { LoadUploadFileFailure } from '../actions/upload-file.actions';
+import { Store } from '@ngrx/store';
+import { AppState } from '../reducers';
 
 /**
  * \@author Dinakar.Meda
@@ -34,9 +37,6 @@ import { FormGroup } from '@angular/forms';
  */
 @Injectable()
 export class FileService {
-    addFile$: EventEmitter<any>;
-    removeFile$: EventEmitter<any>;
-    @Output() errorEmitter$= new EventEmitter();
 
     private _metaData: string[];
     
@@ -47,9 +47,11 @@ export class FileService {
         this._metaData = metaData;
     }
 
-    constructor(public http: CustomHttpClient, private logger: LoggerService) {
-        this.addFile$ = new EventEmitter<any>();
-        this.removeFile$ = new EventEmitter<any>();
+    constructor(
+        public http: CustomHttpClient, 
+        private logger: LoggerService,
+        private store: Store<AppState>) {
+
     }
 
     uploadFile(file: File, form: FormGroup) {
@@ -68,7 +70,7 @@ export class FileService {
                     message: 'upload is failing',
                     error: err
                 }
-                this.errorEmitter$.next(err);
+                this.store.dispatch(new LoadUploadFileFailure());
                 this.logger.error(JSON.stringify(errObj));
                 return observableThrowError(err);
             }));
