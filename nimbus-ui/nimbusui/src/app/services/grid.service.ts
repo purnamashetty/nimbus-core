@@ -30,17 +30,17 @@ import { Subject } from 'rxjs';
 @Injectable()
 export class GridService {
 
-    eventUpdate = new Subject<any>();
-    eventUpdate$ = this.eventUpdate.asObservable();
-    gridData$: EventEmitter<any>;
+    // eventUpdate = new Subject<any>();
+    // eventUpdate$ = this.eventUpdate.asObservable();
+    // gridData$: EventEmitter<any>;
 
     constructor(private http: CustomHttpClient) {
         this.gridData$ = new EventEmitter();
     }
 
-    setSummaryObject(object: any) {
-        this.eventUpdate.next(object);
-    }
+    // setSummaryObject(object: any) {
+    //     this.eventUpdate.next(object);
+    // }
 
     getSummaryDetails(id: string, url: string) {
         // return this.http.get('app/resources/data/cars-medium.json')

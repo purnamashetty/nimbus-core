@@ -197,9 +197,9 @@ export class DataTable extends BaseTableElement implements ControlValueAccessor 
         }
 
         this.rowHover = true;
-        this.gridService.eventUpdate$.subscribe(data => {
-            this.summaryData = data;
-        });
+        // this.gridService.eventUpdate$.subscribe(data => {
+        //     this.summaryData = data;
+        // });
 
         this.pageSvc.gridValueUpdate$.subscribe(event => {            
             if (event.path == this.element.path) {
