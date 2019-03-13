@@ -36,6 +36,9 @@ import { LoggerService } from './logger.service';
 import { MenuItem } from '../shared/menuitem';
 import { Action, Behavior } from './../shared/command.enum';
 import { SessionStoreService, CUSTOM_STORAGE } from './session.store';
+import { Store } from '@ngrx/store';
+import { AppState } from '../reducers';
+import { LoadLayout } from '../actions';
 /**
  * \@author Dinakar.Meda
  * \@whatItDoes 
@@ -54,8 +57,6 @@ import { SessionStoreService, CUSTOM_STORAGE } from './session.store';
 @Injectable()
 export class LayoutService {
 
-    layout$: EventEmitter<any>;
-
     constructor(public http: CustomHttpClient, 
         private wcs: WebContentSvc,
         private pageSvc: PageService,
@@ -63,8 +64,8 @@ export class LayoutService {
         private logger: LoggerService,  
         private router: Router,
         @Inject(CUSTOM_STORAGE) private sessionstore: SessionStoreService,
-        private httpClient: HttpClient) {
-        this.layout$ = new EventEmitter<any>();
+        private httpClient: HttpClient,
+        private store: Store<AppState>) {
     }
 
     public getLayout(flowName: string) {
@@ -119,7 +120,7 @@ export class LayoutService {
         layout['modalList'] = this.getModalItems(pageParam.type.model);
         layout['actiontray'] = this.getActionTrayItems(pageParam.type.model);
         // Push the new menu into the Observable stream
-        this.layout$.next(layout);
+        this.store.dispatch(new LoadLayout({layout: layout}));
     }
 
     private getFooterItems(layoutConfig: Model) {

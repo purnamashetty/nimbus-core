@@ -168,8 +168,7 @@ import { StoreModule } from '@ngrx/store';
 import { reducers, metaReducers } from './reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
-import { EffectsModule } from '@ngrx/effects';
-import { LayoutEffects } from './effects/layout.effects';
+
 /**
  * \@author Dinakar.Meda
  * \@author Sandeep.Mantha
@@ -225,8 +224,7 @@ export function init_app(appinitservice: AppInitService) {
         ChartModule,
         EditorModule,
         StoreModule.forRoot(reducers, { metaReducers }),
-        !environment.production ? StoreDevtoolsModule.instrument() : [],
-        EffectsModule.forRoot([LayoutEffects])
+        !environment.production ? StoreDevtoolsModule.instrument() : []
     ],
     declarations: [ AppComponent, STOMPStatusComponent, FlowWrapper, PageContent, PageNotfoundComponent, StaticText,
         Tile, Section, Header, Form, FormElement, InputText, InputMaskComp, Tab, ComboBox, RadioButton, Signature, CheckBoxGroup,
