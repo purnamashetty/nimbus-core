@@ -17,13 +17,15 @@
 'use strict';
 
 import { Param } from './../shared/param-state';
-import { Directive, ElementRef, Input } from '@angular/core';
+import { Directive, ElementRef, Input, OnDestroy } from '@angular/core';
 import { PrintService } from './../services/print.service';
 import { PrintEvent } from './../shared/print-event';
 import { ServiceConstants } from './../services/service.constants';
 import { LoggerService } from './../services/logger.service';
 import { Subscription } from 'rxjs';
 import { PrintConfig } from './../shared/print-event';
+import { Store } from '@ngrx/store';
+import { AppState } from '../reducers';
 
 /**
  * \@author Tony Lopez
@@ -40,7 +42,7 @@ import { PrintConfig } from './../shared/print-event';
 @Directive({
   selector: '[nmPrint]',
 })
-export class PrintDirective {
+export class PrintDirective implements OnDestroy {
 
     @Input("contentSelector") contentSelector: string;
 
@@ -50,17 +52,19 @@ export class PrintDirective {
 
     nativeElement: Element;
 
-    subscription: Subscription;
+    storeSubsciption: Subscription;
 
     constructor(
         private elementRef: ElementRef, 
         private loggerService: LoggerService, 
-        private printService: PrintService) { 
+        private printService: PrintService,
+        private store: Store<AppState>) { 
             this.nativeElement = elementRef.nativeElement;
     }
 
-    ngAfterViewInit() {        
-        this.subscription = this.printService.printClickUpdate$.subscribe((event: PrintEvent) => {
+    ngAfterViewInit() {       
+        this.storeSubsciption = this.store.subscribe((data) => {
+            const event = data['printClickUpdate$'];
             if(event.path === this.element.path) {
                 if (event.printConfig.stylesheet || event.printConfig.useAppStyles) {
                     event.printConfig.useDelay = true;
@@ -69,12 +73,12 @@ export class PrintDirective {
                 }
                 this.execute(event);
             }
-        });
+        }); 
     }
 
     ngOnDestroy() {
-        if (this.subscription) {
-            this.subscription.unsubscribe();
+        if (this.storeSubsciption) {
+            this.storeSubsciption.unsubscribe();
         }
     }
 

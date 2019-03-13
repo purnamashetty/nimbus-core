@@ -19,20 +19,21 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { PrintEvent, PrintConfig } from './../shared/print-event';
+import { Store } from '@ngrx/store';
+import { AppState } from '../reducers';
+import { LoadPrintClickUpdate$ } from '../actions/print.actions';
 
 @Injectable()
 export class PrintService {
-    
-    printClickUpdate = new Subject<PrintEvent>();
-    printClickUpdate$ = this.printClickUpdate.asObservable();
 
-    constructor() {}
+    constructor(private store: Store<AppState>) {}
 
     emitPrintEvent(printPath: string, uiEvent: UIEvent, printConfig: PrintConfig) {
-        this.printClickUpdate.next({
+        const printClickUpdate$ = {
             path: printPath,
             uiEvent: uiEvent,
             printConfig: printConfig
-        });
+        };
+        this.store.dispatch(new LoadPrintClickUpdate$({printClickUpdate$}));
     }
 }
