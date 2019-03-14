@@ -25,6 +25,9 @@ import { PageService } from './../../../../services/page.service';
 import { LoggerService } from './../../../../services/logger.service';
 import { FormGroup } from '@angular/forms';
 import 'rxjs/add/operator/filter';
+import { Store } from '@ngrx/store';
+import { AppState } from './../../../../reducers';
+import { ResetPostResponseProcessing } from './../../../../actions';
 /**
  * \@author Sandeep.Mantha
  * 
@@ -38,12 +41,12 @@ import 'rxjs/add/operator/filter';
     @Input() form:FormGroup;
     private clicksubject = new Subject();
     private subscription: Subscription;
-    private postProcessing: Subscription;
     private srcElement: any;
+    private storeSubscription: Subscription;
   
     @Output() clickEvnt = new EventEmitter();
 
-    constructor(private pageService: PageService, private logger: LoggerService) {
+    constructor(private pageService: PageService, private logger: LoggerService, private store: Store<AppState>) {
     }
 
     ngOnInit() {
@@ -54,20 +57,17 @@ import 'rxjs/add/operator/filter';
         err => { this.logger.error('Failed to emit click event' + JSON.stringify(err))}
       );
 
-      this.postProcessing = this.pageService.postResponseProcessing$
-      .filter(p=> (p === this.path))
-      .subscribe(event => {
-                  if(this.form) {
-                    if(this.form.valid) {
-                      this.srcElement.removeAttribute('disabled');
-                    }
-                  }
-                  else {
-                    this.srcElement.removeAttribute('disabled');
-                  }
-                },
-        err => { this.logger.error('Failed on processing eventpropagation for path ' + event + ' with '+ JSON.stringify(err));}
-      )
+      this.storeSubscription = this.store.subscribe((data) => {
+        const path = data['pageService']['postResponseProcessing$'];
+        if (path === this.path) {
+          if (this.form && this.form.valid) {
+            this.srcElement.removeAttribute('disabled');
+          } else {
+            this.srcElement.removeAttribute('disabled');
+          }
+          this.store.dispatch(new ResetPostResponseProcessing());
+        }
+      });
     }
 
     @HostListener('click', ['$event'])
@@ -85,9 +85,9 @@ import 'rxjs/add/operator/filter';
       if(this.subscription) {
         this.subscription.unsubscribe();
       }
-      if(this.postProcessing) {
-        this.postProcessing.unsubscribe();
+      if (this.storeSubscription) {
+        this.storeSubscription.unsubscribe();
       }
     }
-
+    
   }

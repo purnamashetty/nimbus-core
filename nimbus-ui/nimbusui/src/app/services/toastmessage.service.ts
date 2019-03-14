@@ -22,7 +22,7 @@ import { ComponentTypes } from './../shared/param-annotations.enum';
 import { ExecuteException } from './../shared/app-config.interface';
 import { Store } from '@ngrx/store';
 import { AppState } from '../reducers';
-import { LoadMessageEvent } from '../actions/toast-message.actions';
+import { LoadMessageEvent } from '../actions';
 /**
  * \@author Sandeep.Mantha
  * \@whatItDoes 

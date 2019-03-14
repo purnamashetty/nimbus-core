@@ -1,5 +1,5 @@
 import { PrintConfig } from '../shared/print-event';
-import { PrintActions, PrintActionTypes } from '../actions/print.actions';
+import { PrintActions, PrintActionTypes } from '../actions';
 
 
 export interface PrintState {

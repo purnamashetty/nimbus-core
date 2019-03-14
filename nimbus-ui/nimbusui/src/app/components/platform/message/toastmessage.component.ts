@@ -22,7 +22,7 @@ import { ComponentTypes } from '../../../shared/param-annotations.enum';
 import { NmMessageService } from './../../../services/toastmessage.service';
 import { Store } from '@ngrx/store';
 import { AppState } from './../../../reducers';
-import { ResetMessageEvent } from './../../../actions/toast-message.actions';
+import { ResetMessageEvent } from './../../../actions';
 /**
  *  
  * \@author Sandeep Mantha

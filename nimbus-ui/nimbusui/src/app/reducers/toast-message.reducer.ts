@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { ToastMessageActionTypes, ToastMessageActions } from '../actions/toast-message.actions';
+import { ToastMessageActionTypes, ToastMessageActions } from '../actions';
 import { Message } from '../shared/message';
 
 export const initialState = new Message();

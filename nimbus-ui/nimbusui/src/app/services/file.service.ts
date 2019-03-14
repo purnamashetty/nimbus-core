@@ -23,7 +23,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { RequestOptions, Request, RequestMethod } from '@angular/http';
 import { LoggerService } from './logger.service';
 import { FormGroup } from '@angular/forms';
-import { LoadUploadFileFailure } from '../actions/upload-file.actions';
+import { LoadUploadFileFailure } from '../actions';
 import { Store } from '@ngrx/store';
 import { AppState } from '../reducers';
 

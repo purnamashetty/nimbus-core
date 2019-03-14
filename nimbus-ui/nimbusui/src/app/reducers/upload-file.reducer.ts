@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { UploadFileActions, UploadFileActionTypes } from '../actions/upload-file.actions';
+import { UploadFileActions, UploadFileActionTypes } from '../actions';
 
 
 export interface uploadFileState {

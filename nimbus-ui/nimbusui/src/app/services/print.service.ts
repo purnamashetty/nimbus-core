@@ -21,7 +21,7 @@ import { Subject } from 'rxjs/Subject';
 import { PrintEvent, PrintConfig } from './../shared/print-event';
 import { Store } from '@ngrx/store';
 import { AppState } from '../reducers';
-import { LoadPrintClickUpdate$ } from '../actions/print.actions';
+import { LoadPrintClickUpdate$ } from '../actions';
 
 @Injectable()
 export class PrintService {

@@ -172,6 +172,7 @@ import * as fromLayout from './reducers/layout.reducer';
 import * as fromPrint from './reducers/print.reducer';
 import * as fromUploadFile from './reducers/upload-file.reducer';
 import * as fromToastMessage from './reducers/toast-message.reducer';
+import * as fromPage from './reducers/page-service.reducer';
 /**
  * \@author Dinakar.Meda
  * \@author Sandeep.Mantha
@@ -231,7 +232,8 @@ export function init_app(appinitservice: AppInitService) {
         StoreModule.forFeature('layout$', fromLayout.layoutReducer),
         StoreModule.forFeature('printClickUpdate$', fromPrint.printReducer),
         StoreModule.forFeature('uploadFile', fromUploadFile.uploadFileReducer),
-        StoreModule.forFeature('messageEvent', fromToastMessage.toastMessageReducer)
+        StoreModule.forFeature('messageEvent', fromToastMessage.toastMessageReducer),
+        StoreModule.forFeature('pageService', fromPage.pagereducer)
     ],
     declarations: [ AppComponent, STOMPStatusComponent, FlowWrapper, PageContent, PageNotfoundComponent, StaticText,
         Tile, Section, Header, Form, FormElement, InputText, InputMaskComp, Tab, ComboBox, RadioButton, Signature, CheckBoxGroup,

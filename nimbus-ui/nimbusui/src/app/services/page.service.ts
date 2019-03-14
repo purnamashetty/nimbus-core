@@ -44,7 +44,7 @@ import { DataGroup } from '../components/platform/charts/chartdata';
 import { NmMessageService } from './toastmessage.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '../reducers';
-import { LoadMessageEvent } from '../actions/toast-message.actions';
+import { LoadMessageEvent, LoadPostResponseProcessing } from '../actions';
 /**
  * \@author Dinakar.Meda
  * \@author Sandeep.Mantha
@@ -70,9 +70,6 @@ export class PageService {
 
         gridValueUpdate = new Subject<Param>();
         gridValueUpdate$ = this.gridValueUpdate.asObservable();
-
-        postResponseProcessing = new Subject<string>();
-        postResponseProcessing$ = this.postResponseProcessing.asObservable();
 
         private requestQueue :RequestContainer[] = [];
 
@@ -527,7 +524,7 @@ export class PageService {
 
         processError(err:any, paramPath?: string) {
                 if(paramPath) {
-                        this.postResponseProcessing.next(paramPath);
+                        this.store.dispatch(new LoadPostResponseProcessing({postResponseProcessing$: paramPath}));
                 }
                 this.logError(err);
                 this.hideLoader();
@@ -535,7 +532,7 @@ export class PageService {
 
         invokeFinally(url:string, paramPath?: string) {
                 if(paramPath){
-                        this.postResponseProcessing.next(paramPath);
+                        this.store.dispatch(new LoadPostResponseProcessing({postResponseProcessing$: paramPath}));
                 }
                 this.logger.info('http response for ' + url + ' processed successsfully');
                 this.hideLoader();

@@ -32,7 +32,7 @@ import { Message } from '../../../shared/message';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../reducers';
 import { Subscription } from 'rxjs';
-import { ResetUploadFileStatus } from '../../../actions/upload-file.actions';
+import { ResetUploadFileStatus } from '../../../actions';
 
 export const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
 	provide: NG_VALUE_ACCESSOR,
