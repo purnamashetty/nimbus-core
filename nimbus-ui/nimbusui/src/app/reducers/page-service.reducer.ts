@@ -10,6 +10,7 @@ export interface PageConfigState {
   config: any;
   eventUpdate: Param;
   postResponseProcessing$: string;
+  gridValueUpdate$: Param;
 }
 
 export const initialStateParam: any = {};
@@ -21,7 +22,8 @@ export const initialParamConfigState: any = {
     flow: 'intial flow'
   },
   eventUpdate: initialStateParam,
-  postResponseProcessing$: ''
+  postResponseProcessing$: '',
+  gridValueUpdate$: initialStateParam
 };
 
 export function pagereducer(state: PageConfigState = initialParamConfigState, action: PageActions): PageConfigState {
@@ -54,6 +56,18 @@ export function pagereducer(state: PageConfigState = initialParamConfigState, ac
     case PageActionTypes.ResetPostResponseProcessing:
     {
       state.postResponseProcessing$ = '';
+      return state;
+    }
+
+    case PageActionTypes.LoadGridValueUpdate:
+    {
+      state.gridValueUpdate$ = action.payload.gridValueUpdate$;
+      return state;
+    }
+
+    case PageActionTypes.ResetGridValueUpdate:
+    {
+      state.gridValueUpdate$ = initialStateParam;
       return state;
     }
 

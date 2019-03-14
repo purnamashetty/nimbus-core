@@ -7,7 +7,9 @@ export enum PageActionTypes {
   LoadPageLayout = '[Page] Load Page Layout',
   LoadPageEventUpdate = '[Page] Load Page EventUpdate',
   LoadPostResponseProcessing = '[Page] Load Page PostResponseProcessing',
-  ResetPostResponseProcessing = '[Page] Reset Page PostResponseProcessing'
+  ResetPostResponseProcessing = '[Page] Reset Page PostResponseProcessing',
+  LoadGridValueUpdate = '[Page] Load Page GridValueUpdate',
+  ResetGridValueUpdate = '[Page] Reset Page GridValueUpdate'
 }
 
 export class LoadPageConfig implements Action {
@@ -38,4 +40,14 @@ export class ResetPostResponseProcessing implements Action {
   readonly type = PageActionTypes.ResetPostResponseProcessing;
 }
 
-export type PageActions = LoadPageConfig | LoadPageLayout | LoadPageEventUpdate | LoadPostResponseProcessing | ResetPostResponseProcessing;
+export class LoadGridValueUpdate implements Action {
+  readonly type = PageActionTypes.LoadGridValueUpdate;
+
+  constructor(public payload: {gridValueUpdate$: Param}) {}
+}
+
+export class ResetGridValueUpdate implements Action {
+  readonly type = PageActionTypes.ResetGridValueUpdate;
+}
+
+export type PageActions = LoadPageConfig | LoadPageLayout | LoadPageEventUpdate | LoadPostResponseProcessing | ResetPostResponseProcessing | LoadGridValueUpdate | ResetGridValueUpdate;

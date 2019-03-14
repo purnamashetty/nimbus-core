@@ -40,6 +40,9 @@ import { HttpMethod } from './../../../shared/command.enum';
 import { TableComponentConstants } from './table.component.constants';
 import { ViewComponent, ComponentTypes } from '../../../shared/param-annotations.enum';
 import { BaseTableElement } from './../base-table-element.component';
+import { Store } from '@ngrx/store';
+import { AppState } from './../../../reducers';
+import { ResetGridValueUpdate } from './../../../actions';
 
 export const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
     provide: NG_VALUE_ACCESSOR,
@@ -129,7 +132,8 @@ export class DataTable extends BaseTableElement implements ControlValueAccessor 
         protected _wcs: WebContentSvc,
         private gridService: GridService,
         private dtFormat: DateTimeFormatPipe,
-        protected cd: ChangeDetectorRef) {
+        protected cd: ChangeDetectorRef,
+        private store: Store<AppState>) {
 
         super(_wcs, cd);
     }
@@ -201,7 +205,9 @@ export class DataTable extends BaseTableElement implements ControlValueAccessor 
         //     this.summaryData = data;
         // });
 
-        this.pageSvc.gridValueUpdate$.subscribe(event => {            
+        this.store.subscribe((data) => {
+            const event = data['pageService']['gridValueUpdate$'];
+            // console.log('gridValueUpdate$', event);
             if (event.path == this.element.path) {
                 this.value = event.gridData.leafState;
                 
@@ -232,6 +238,7 @@ export class DataTable extends BaseTableElement implements ControlValueAccessor 
                 if(!(<ViewRef>this.cd).destroyed)
                     this.cd.detectChanges();
                 this.resetMultiSelection();
+                this.store.dispatch(new ResetGridValueUpdate());
             }
         });
 

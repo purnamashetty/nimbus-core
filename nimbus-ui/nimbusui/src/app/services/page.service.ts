@@ -44,7 +44,7 @@ import { DataGroup } from '../components/platform/charts/chartdata';
 import { NmMessageService } from './toastmessage.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '../reducers';
-import { LoadMessageEvent, LoadPostResponseProcessing } from '../actions';
+import { LoadMessageEvent, LoadPostResponseProcessing, LoadGridValueUpdate } from '../actions';
 /**
  * \@author Dinakar.Meda
  * \@author Sandeep.Mantha
@@ -67,9 +67,6 @@ export class PageService {
 
         validationUpdate = new Subject<Param>();
         validationUpdate$ = this.validationUpdate.asObservable();
-
-        gridValueUpdate = new Subject<Param>();
-        gridValueUpdate$ = this.gridValueUpdate.asObservable();
 
         private requestQueue :RequestContainer[] = [];
 
@@ -722,7 +719,7 @@ export class PageService {
                                                 } else {
                                                         param.gridData.leafState.push(this.createGridData(eventModel.value.type.model.params, param).leafState);
                                                 }
-                                                this.gridValueUpdate.next(param);
+                                                this.store.dispatch(new LoadGridValueUpdate({gridValueUpdate$: param}));
                                         }
                                         // Collection check - replace entire grid
                                         if (param.config.type.collection) {
@@ -731,7 +728,7 @@ export class PageService {
                                                         param.page = page;
                                                 }
                                                 param.gridData = this.createGridData(eventModel.value.type.model.params, param);
-                                                this.gridValueUpdate.next(param);
+                                                this.store.dispatch(new LoadGridValueUpdate({gridValueUpdate$: param}));
                                         }
                                         //handle visible, enabled, activatevalidationgroups - the state above will always run if visible is true or false
                                         let responseGridParam: Param = new Param(this.configService).deserialize(eventModel.value, eventModel.value.path);
@@ -748,7 +745,7 @@ export class PageService {
                                                                 let nestedElement = this.getNestedElementParam(param.gridData.leafState[p]['nestedElement'], nestedPath, eventModel.value.path);
                                                                 if (nestedElement && nestedElement.gridData) {
                                                                         nestedElement['gridData'] = this.createGridData(eventModel.value.type.model.params, nestedElement);
-                                                                        this.gridValueUpdate.next(nestedElement);
+                                                                        this.store.dispatch(new LoadGridValueUpdate({gridValueUpdate$: nestedElement}));
                                                                 }
                                                                 // if nestedElement is not present, we do not need to handle this scenario.
                                                                 break;

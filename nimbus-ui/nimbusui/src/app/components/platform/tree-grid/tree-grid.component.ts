@@ -31,6 +31,9 @@ import { GridUtils } from './../../../shared/grid-utils';
 import { ChangeDetectorRef } from '@angular/core';
 import { TreeTable } from 'primeng/primeng';
 import { ParamUtils } from './../../../shared/param-utils';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../reducers';
+import { ResetGridValueUpdate } from '../../../actions';
 
 /**
  * \@author Vivek Kamineni
@@ -76,18 +79,20 @@ export class TreeGrid extends BaseTableElement implements ControlValueAccessor {
         protected _wcs: WebContentSvc,
         private pageSvc: PageService,
         private gridUtils: GridUtils,
-        protected cd: ChangeDetectorRef) {
+        protected cd: ChangeDetectorRef,
+        private store: Store<AppState>) {
         super(_wcs, cd);
     }
 
     ngOnInit() {
         super.ngOnInit();
         this.pageSvc.processEvent(this.element.path, '$execute', new GenericDomain(), HttpMethod.GET.value, undefined);
-        this.pageSvc.gridValueUpdate$.subscribe((treeList: Param) => {
+        this.store.subscribe((data) => {
+            const treeList = data['pageService']['gridValueUpdate$'];
             if (this.element.path === treeList.path) {
                 this.tt.first = 0;
                 this.treeData = this.getTreeStructure(treeList.gridData.leafState);
-                
+                this.store.dispatch(new ResetGridValueUpdate());
             }
         });
 
