@@ -42,6 +42,9 @@ import { Message } from './../shared/message';
 import { ComponentTypes } from './../shared/param-annotations.enum';
 import { DataGroup } from '../components/platform/charts/chartdata';
 import { NmMessageService } from './toastmessage.service';
+import { Store } from '@ngrx/store';
+import { AppState } from '../reducers';
+import { LoadMessageEvent } from '../actions/toast-message.actions';
 /**
  * \@author Dinakar.Meda
  * \@author Sandeep.Mantha
@@ -75,7 +78,8 @@ export class PageService {
 
         private _entityId: number = 0;
         constructor(private http: CustomHttpClient, private loaderService: LoaderService, private configService: ConfigService, 
-                    private logger: LoggerService, private sessionStore: SessionStoreService, private location: Location, private toastService: NmMessageService) {
+                    private logger: LoggerService, private sessionStore: SessionStoreService, private location: Location, 
+                    private toastService: NmMessageService, private store: Store<AppState>) {
                 // initialize
                 this.flowRootDomainId = {};
                 // Create Observable Stream to output our data     
@@ -570,7 +574,7 @@ export class PageService {
                 } else {
                         let flowConfig: Model = viewRoot.model;
                         if(eventModel.value.path == '/'+flowName && eventModel.value.message) {
-                                this.toastService.emitMessageEvent(eventModel.value.message);
+                                this.store.dispatch(new LoadMessageEvent({messageList: eventModel.value.message}));
                         }
                         if (flowConfig) {
                                 this.traverseConfig(flowConfig.params, eventModel);

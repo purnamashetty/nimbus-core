@@ -20,6 +20,9 @@ import { Component, Input, NgZone, ChangeDetectorRef } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { ComponentTypes } from '../../../shared/param-annotations.enum';
 import { NmMessageService } from './../../../services/toastmessage.service';
+import { Store } from '@ngrx/store';
+import { AppState } from './../../../reducers';
+import { ResetMessageEvent } from './../../../actions/toast-message.actions';
 /**
  *  
  * \@author Sandeep Mantha
@@ -39,18 +42,24 @@ import { NmMessageService } from './../../../services/toastmessage.service';
 export class ToastMessageComponent { 
     componentTypes = ComponentTypes;
 
-    constructor(private messageService: MessageService, private cdr: ChangeDetectorRef, private ngZone: NgZone, private _messageservice: NmMessageService) {}
+    constructor(
+        private messageService: MessageService, 
+        private cdr: ChangeDetectorRef, 
+        private ngZone: NgZone, 
+        private _messageservice: NmMessageService,
+        private store: Store<AppState>) {}
 
     ngOnInit() {
-
-        this._messageservice.messageEvent$.subscribe(messages => {
-            messages.forEach(msg => {
-                this.ngZone.run(() => {
-                        this.messageService.addAll(msg.messageArray);
+        this.store.subscribe(data => {
+            const messages = data['messageEvent'];
+            if (messages[0]['messageArray'].length > 0) {
+                messages.forEach(msg => {
+                    this.ngZone.run(() => {
+                            this.messageService.addAll(msg.messageArray);
+                    });
                 });
-            });
-           
-
+                this.store.dispatch(new ResetMessageEvent());
+            }
         });
     }
 

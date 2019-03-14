@@ -35,7 +35,7 @@ export class GridService {
     // gridData$: EventEmitter<any>;
 
     constructor(private http: CustomHttpClient) {
-        this.gridData$ = new EventEmitter();
+        // this.gridData$ = new EventEmitter();
     }
 
     // setSummaryObject(object: any) {

@@ -171,7 +171,7 @@ import { environment } from '../environments/environment';
 import * as fromLayout from './reducers/layout.reducer';
 import * as fromPrint from './reducers/print.reducer';
 import * as fromUploadFile from './reducers/upload-file.reducer';
-
+import * as fromToastMessage from './reducers/toast-message.reducer';
 /**
  * \@author Dinakar.Meda
  * \@author Sandeep.Mantha
@@ -230,7 +230,8 @@ export function init_app(appinitservice: AppInitService) {
         !environment.production ? StoreDevtoolsModule.instrument() : [],
         StoreModule.forFeature('layout$', fromLayout.layoutReducer),
         StoreModule.forFeature('printClickUpdate$', fromPrint.printReducer),
-        StoreModule.forFeature('uploadFile', fromUploadFile.uploadFileReducer)
+        StoreModule.forFeature('uploadFile', fromUploadFile.uploadFileReducer),
+        StoreModule.forFeature('messageEvent', fromToastMessage.toastMessageReducer)
     ],
     declarations: [ AppComponent, STOMPStatusComponent, FlowWrapper, PageContent, PageNotfoundComponent, StaticText,
         Tile, Section, Header, Form, FormElement, InputText, InputMaskComp, Tab, ComboBox, RadioButton, Signature, CheckBoxGroup,

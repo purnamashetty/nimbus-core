@@ -20,6 +20,9 @@ import { Subject } from 'rxjs';
 import { Message } from './../shared/message';
 import { ComponentTypes } from './../shared/param-annotations.enum';
 import { ExecuteException } from './../shared/app-config.interface';
+import { Store } from '@ngrx/store';
+import { AppState } from '../reducers';
+import { LoadMessageEvent } from '../actions/toast-message.actions';
 /**
  * \@author Sandeep.Mantha
  * \@whatItDoes 
@@ -30,10 +33,7 @@ import { ExecuteException } from './../shared/app-config.interface';
 @Injectable()
 export class NmMessageService {
     
-    constructor() {}
-
-    messageEvent = new Subject<Message[]>();
-    messageEvent$ = this.messageEvent.asObservable();
+    constructor(private store: Store<AppState>) {}
 
     notifyErrorEvent(exec: ExecuteException) {
         if (exec.message) {
@@ -44,7 +44,7 @@ export class NmMessageService {
                 messages.push({severity: 'error',  summary: 'Error Message',  detail: exec.message, life: 10000});
                 msg.messageArray = messages;
                 messageList.push(msg);
-                this.emitMessageEvent(messageList);
+                this.store.dispatch(new LoadMessageEvent({messageList}));
         }
     }
 
@@ -54,10 +54,7 @@ export class NmMessageService {
         msg.context = ComponentTypes.toast.toString();
         msg.messageArray = messages;
         messageList.push(msg);
-        this.emitMessageEvent(messageList);
+        this.store.dispatch(new LoadMessageEvent({messageList}));
     }
 
-    emitMessageEvent(messageList: Message[]) {
-        this.messageEvent.next(messageList);
-    }
 }
