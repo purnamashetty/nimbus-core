@@ -4,6 +4,7 @@ import { Param } from '../shared/param-state';
 
 export enum PageActionTypes {
   LoadPageConfig = '[Page] Load Page Config',
+  ResetPageConfig = '[Page] Reset Page Config',
   LoadPageLayout = '[Page] Load Page Layout',
   LoadPageEventUpdate = '[Page] Load Page EventUpdate',
   LoadPostResponseProcessing = '[Page] Load Page PostResponseProcessing',
@@ -15,7 +16,7 @@ export enum PageActionTypes {
 export class LoadPageConfig implements Action {
   readonly type = PageActionTypes.LoadPageConfig;
 
-  constructor(public payload: {config: any}) {}
+  constructor(public payload: {config$: any}) {}
 }
 
 export class LoadPageLayout implements Action {
@@ -50,4 +51,8 @@ export class ResetGridValueUpdate implements Action {
   readonly type = PageActionTypes.ResetGridValueUpdate;
 }
 
-export type PageActions = LoadPageConfig | LoadPageLayout | LoadPageEventUpdate | LoadPostResponseProcessing | ResetPostResponseProcessing | LoadGridValueUpdate | ResetGridValueUpdate;
+export class ResetPageConfig implements Action {
+  readonly type = PageActionTypes.ResetPageConfig;
+}
+
+export type PageActions = LoadPageConfig | LoadPageLayout | LoadPageEventUpdate | LoadPostResponseProcessing | ResetPostResponseProcessing | LoadGridValueUpdate | ResetGridValueUpdate | ResetPageConfig;

@@ -62,18 +62,6 @@ export class FlowWrapper {
     }
 
     ngOnInit() {
-        this._pageSvc.config$.subscribe(result => {
-            this.page = result;
-            // Navigate to page with pageId
-            let toPage = this.page.pageConfig.config.code;
-            let parentRoute = this.page.pageConfig.config.uiStyles.attributes.route;
-            if (parentRoute) {
-                toPage = parentRoute + '/' + toPage;
-            }
-//            document.getElementById("main-content").classList.remove("withInfoBar");
-            //this._router.navigate([toPage], { queryParams: { flow: this.page.flow }, relativeTo: this._route.parent.parent });
-            this._router.navigate([toPage], { relativeTo: this._route });
-        });
         // IF this is a new flow to be loaded.
 
         if (this._configSvc.getFlowConfig(this.routeParams['domain']) === undefined) {

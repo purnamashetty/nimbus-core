@@ -7,7 +7,7 @@ import { ConfigService } from '../services/config.service';
 
 export interface PageConfigState {
   layout: string;
-  config: any;
+  config$: any;
   eventUpdate: Param;
   postResponseProcessing$: string;
   gridValueUpdate$: Param;
@@ -17,7 +17,7 @@ export const initialStateParam: any = {};
 
 export const initialParamConfigState: any = {
   layout: null,
-  config: {
+  config$: {
     pageConfig: initialStateParam,
     flow: 'intial flow'
   },
@@ -31,7 +31,7 @@ export function pagereducer(state: PageConfigState = initialParamConfigState, ac
 
     case PageActionTypes.LoadPageConfig:
     {
-      state.config = action.payload.config;
+      state.config$ = action.payload.config$;
       return state;
     }
 
@@ -68,6 +68,15 @@ export function pagereducer(state: PageConfigState = initialParamConfigState, ac
     case PageActionTypes.ResetGridValueUpdate:
     {
       state.gridValueUpdate$ = initialStateParam;
+      return state;
+    }
+
+    case PageActionTypes.ResetPageConfig:
+    {
+      state.config$ = {
+        pageConfig: initialStateParam,
+        flow: 'intial flow'
+      };
       return state;
     }
 

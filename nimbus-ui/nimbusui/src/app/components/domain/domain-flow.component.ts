@@ -31,6 +31,7 @@ import { NmMessageService } from './../../services/toastmessage.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../reducers';
 import { Subscription } from 'rxjs';
+import { ResetPageConfig } from '../../actions';
 /**
  * \@author Dinakar.Meda
  * \@whatItDoes 
@@ -84,34 +85,44 @@ export class DomainFlowCmp implements OnDestroy {
     
                     this.setLayoutScroll();
                 }
+
+                // const page = data['pageService']['config$'];
+                // if (page && page.pageConfig && page.pageConfig.config) {
+                //     this._logger.debug('domain flow component received page from config$ subject');
+                //     // Navigate to page with pageId
+                //     let toPage = '';
+                //     // if(page.flow == "notesview") {
+                //     //     toPage = './' + page.flow + '/' + page.pageConfig.config.code;
+                //     // } else {
+                //         toPage = '/h/' + page.flow + '/' + page.pageConfig.config.code;
+                //     //}
+                //     this._logger.debug('domain flow component will be navigated to ' + toPage + ' route');
+                //     this._router.navigate([toPage], { relativeTo: this._route });
+                //     this.store.dispatch(new ResetPageConfig());
+                // }
+                
+            });
+            console.log('domainflowcomponent....intializ');
+            
+
+            this._pageSvc.config$.subscribe(result => {
+                console.log('result--domainflowcomponent', result);
+                
+                let page: Page = result;
+                this._logger.debug('domain flow component received page from config$ subject');
+                if (page && page.pageConfig && page.pageConfig.config) {
+                    // Navigate to page with pageId
+                    let toPage = '';
+                    // if(page.flow == "notesview") {
+                    //     toPage = './' + page.flow + '/' + page.pageConfig.config.code;
+                    // } else {
+                        toPage = '/h/' + page.flow + '/' + page.pageConfig.config.code;
+                    //}
+                    this._logger.debug('domain flow component will be navigated to ' + toPage + ' route');
+                    this._router.navigate([toPage], { relativeTo: this._route });
+                }
             });
 
-        this._pageSvc.config$.subscribe(result => {
-            let page: Page = result;
-            this._logger.debug('domain flow component received page from config$ subject');
-            if (page && page.pageConfig && page.pageConfig.config) {
-                // Navigate to page with pageId
-                let toPage = '';
-                // if(page.flow == "notesview") {
-                //     toPage = './' + page.flow + '/' + page.pageConfig.config.code;
-                // } else {
-                    toPage = '/h/' + page.flow + '/' + page.pageConfig.config.code;
-                //}
-                this._logger.debug('domain flow component will be navigated to ' + toPage + ' route');
-                this._router.navigate([toPage], { relativeTo: this._route });
-            }
-        });
-
-        this._pageSvc.subdomainconfig$.subscribe(result => {
-            let page: Page = result;
-            this._logger.debug('domain flow component received page from config$ subject');
-            if (page && page.pageConfig && page.pageConfig.config) {
-                // Navigate to page with pageId
-                let toPage = './' +  page.flow + '/' + page.pageConfig.config.code;
-                this._logger.debug('sub domain flow component will be navigated to ' + toPage + ' route');
-                this._router.navigate([toPage], { relativeTo: this._route });
-            }
-        });
     }
 
     getDocument() {

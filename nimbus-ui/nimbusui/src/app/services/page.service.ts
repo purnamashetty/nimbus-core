@@ -44,7 +44,7 @@ import { DataGroup } from '../components/platform/charts/chartdata';
 import { NmMessageService } from './toastmessage.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '../reducers';
-import { LoadMessageEvent, LoadPostResponseProcessing, LoadGridValueUpdate } from '../actions';
+import { LoadMessageEvent, LoadPostResponseProcessing, LoadGridValueUpdate, LoadPageConfig } from '../actions';
 /**
  * \@author Dinakar.Meda
  * \@author Sandeep.Mantha
@@ -56,7 +56,6 @@ import { LoadMessageEvent, LoadPostResponseProcessing, LoadGridValueUpdate } fro
 @Injectable()
 export class PageService {
         config$: EventEmitter<any>;
-        subdomainconfig$: EventEmitter<any>;
         layout$: EventEmitter<any>;
         flowRootDomainId: Object;
         pageMap: Object;
@@ -78,7 +77,6 @@ export class PageService {
                 this.flowRootDomainId = {};
                 // Create Observable Stream to output our data     
                 this.config$ = new EventEmitter();
-                this.subdomainconfig$ = new EventEmitter();
                 this.layout$ = new EventEmitter();
         }
 
@@ -420,7 +418,10 @@ export class PageService {
                 // } else {
                 //         this.config$.next(page);
                 // }
+                console.log('config--pageservice');
+                
                 this.config$.next(page);
+                this.store.dispatch(new LoadPageConfig({config$: page}));
         }
 
         getPageConfigById(pageId: string, flowName: string): Promise<Param> {
