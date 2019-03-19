@@ -4,3 +4,4 @@ export * from './print.actions';
 export * from './toast-message.actions';
 export * from './upload-file.actions';
 export * from './control-value-changed.actions';
+export * from './loader.actions';

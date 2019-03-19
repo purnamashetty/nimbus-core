@@ -25,6 +25,8 @@ import { LoaderState } from './loader.state';
 import { LoaderService } from './../../../services/loader.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { AppState } from './../../../reducers';
 
 /**
  * 
@@ -39,21 +41,24 @@ import { Subscription } from 'rxjs';
     templateUrl: 'loader.component.html'
 })
 
-export class LoaderComponent implements OnInit {
+export class LoaderComponent implements OnInit, OnDestroy {
 
 show = false;
 private subscription: Subscription;
+storeSubscription: Subscription;
 
-constructor(private loaderService: LoaderService) { }
+constructor(private loaderService: LoaderService, private store: Store<AppState>) { }
 
 ngOnInit() { 
-        this.subscription = this.loaderService.loaderUpdate
-            .subscribe((state: LoaderState) => {
-                this.show = state.show;
+
+            this.storeSubscription = this.store.subscribe((data) => {
+                console.log('loader is working from store');
+                    this.show = data['loaderUpdate$']['show']; 
             });
     }
 
 ngOnDestroy() {
-        this.subscription.unsubscribe();
+        // this.subscription.unsubscribe();
+        this.storeSubscription.unsubscribe();
     }
 }

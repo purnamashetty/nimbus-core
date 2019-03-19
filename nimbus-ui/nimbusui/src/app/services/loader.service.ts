@@ -24,6 +24,9 @@ THE SOFTWARE.*/
 import { LoaderState } from './../components/platform/loader/loader.state';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { AppState } from '../reducers';
+import { LoadLoader, HideLoader } from '../actions';
 
 /**
  * \@author reference https://github.com/ivanderbu2/angular-redux
@@ -39,13 +42,15 @@ export class LoaderService {
 loaderUpdate = new Subject<LoaderState>();
 loaderUpdate$ = this.loaderUpdate.asObservable();
 
-constructor() { }
+constructor(private store: Store<AppState>) { }
 
 show() {
+        this.store.dispatch(new LoadLoader());
         this.loaderUpdate.next(<LoaderState>{show: true});
     }
 
 hide() {
+        this.store.dispatch(new HideLoader());
         this.loaderUpdate.next(<LoaderState>{show: false});
     }
 

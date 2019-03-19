@@ -174,6 +174,7 @@ import * as fromUploadFile from './reducers/upload-file.reducer';
 import * as fromToastMessage from './reducers/toast-message.reducer';
 import * as fromPage from './reducers/page-service.reducer';
 import * as fromControlValueChanged from './reducers/control-value-changed.reducer';
+import * as fromLoader from './reducers/loader.reducer';
 /**
  * \@author Dinakar.Meda
  * \@author Sandeep.Mantha
@@ -235,7 +236,8 @@ export function init_app(appinitservice: AppInitService) {
         StoreModule.forFeature('uploadFile', fromUploadFile.uploadFileReducer),
         StoreModule.forFeature('messageEvent', fromToastMessage.toastMessageReducer),
         StoreModule.forFeature('pageService', fromPage.pagereducer),
-        StoreModule.forFeature('controlValueChanged$', fromControlValueChanged.controlValueChangedReducer)
+        StoreModule.forFeature('controlValueChanged$', fromControlValueChanged.controlValueChangedReducer),
+        StoreModule.forFeature('loaderUpdate$', fromLoader.loaderReducer)
     ],
     declarations: [ AppComponent, STOMPStatusComponent, FlowWrapper, PageContent, PageNotfoundComponent, StaticText,
         Tile, Section, Header, Form, FormElement, InputText, InputMaskComp, Tab, ComboBox, RadioButton, Signature, CheckBoxGroup,
