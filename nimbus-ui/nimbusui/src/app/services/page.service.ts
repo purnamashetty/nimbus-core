@@ -44,7 +44,7 @@ import { DataGroup } from '../components/platform/charts/chartdata';
 import { NmMessageService } from './toastmessage.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '../reducers';
-import { LoadMessageEvent, LoadPostResponseProcessing, LoadGridValueUpdate, LoadPageConfig } from '../actions';
+import { LoadMessageEvent, LoadPostResponseProcessing, LoadGridValueUpdate, LoadPageConfig, LoadLayout$, LoadPageLayout } from '../actions';
 /**
  * \@author Dinakar.Meda
  * \@author Sandeep.Mantha
@@ -55,7 +55,6 @@ import { LoadMessageEvent, LoadPostResponseProcessing, LoadGridValueUpdate, Load
  */
 @Injectable()
 export class PageService {
-        config$: EventEmitter<any>;
         layout$: EventEmitter<any>;
         flowRootDomainId: Object;
         pageMap: Object;
@@ -76,7 +75,6 @@ export class PageService {
                 // initialize
                 this.flowRootDomainId = {};
                 // Create Observable Stream to output our data     
-                this.config$ = new EventEmitter();
                 this.layout$ = new EventEmitter();
         }
 
@@ -293,10 +291,10 @@ export class PageService {
                 return undefined;
         }
 
-        navigateToDefaultPageForFlow(model: Model, flow: string) {
+        navigateToDefaultPageForFlow(model: Model, flow: string, refresh?: boolean) {
                 let pageParam: Param = this.getDetaultPageForFlow(model);
                 if (pageParam) {
-                        this.navigateToPage(pageParam, flow);
+                        this.navigateToPage(pageParam, flow, refresh);
                 }
         }
 
@@ -337,7 +335,7 @@ export class PageService {
                                         let flow = this.getFlowNameFromOutput(output.value.path);
                                         // Check if the _new output is for the Root Flow
                                         if (output.value.path == "/" + flow) {
-                                                this.setViewRootAndNavigate(output,flow,navToDefault,true);
+                                                this.setViewRootAndNavigate(output,flow,navToDefault,false);
                                         } else {
                                                 let eventModel: ModelEvent = new ModelEvent().deserialize(output);
                                                 this.traverseFlowConfig(eventModel, flow);
@@ -393,10 +391,11 @@ export class PageService {
                         viewRoot.layout = output.value.config.type.model.uiStyles.attributes.layout;
                        // if(refreshLayout) {
                                 this.layout$.emit(viewRoot.layout);
+                                this.store.dispatch(new LoadPageLayout({layout: viewRoot.layout}));
                        // }
                 }
                 if (navToDefault) {
-                        this.navigateToDefaultPageForFlow(output.value.type.model, flow);
+                        this.navigateToDefaultPageForFlow(output.value.type.model, flow, refreshLayout);
                 }
         }
         /** When the config is already loaded, find the default page to load */
@@ -409,19 +408,19 @@ export class PageService {
                 this.navigateToDefaultPageForFlow(model, flowName);
         }
 
-        navigateToPage(pageParam: Param, flow: string) {
+        navigateToPage(pageParam: Param, flow: string, refresh?: boolean) {
                 let page: Page = new Page();
                 page.pageConfig = pageParam;
                 page.flow = flow;
+
                 // if(flow !== 'cmcaseview' && flow !== 'vrCSLandingPage' && flow !== 'home') {
                 //         this.subdomainconfig$.next(page);
                 // } else {
                 //         this.config$.next(page);
                 // }
-                console.log('config--pageservice');
-                
-                this.config$.next(page);
-                this.store.dispatch(new LoadPageConfig({config$: page}));
+                if (!refresh) {
+                        this.store.dispatch(new LoadPageConfig({config$: page}));
+                }
         }
 
         getPageConfigById(pageId: string, flowName: string): Promise<Param> {

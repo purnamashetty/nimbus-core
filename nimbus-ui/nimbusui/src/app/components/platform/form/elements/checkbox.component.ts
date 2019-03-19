@@ -20,6 +20,8 @@ import { NgModel, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { WebContentSvc } from '../../../../services/content-management.service';
 import { BaseControl } from './base-control.component';
 import { ControlSubscribers } from './../../../../services/control-subscribers.service';
+import { Store } from '@ngrx/store';
+import { AppState } from './../../../../reducers';
 
 /**
  * \@author Dinakar.Meda
@@ -51,8 +53,8 @@ export class CheckBox extends BaseControl<boolean> {
 
     @ViewChild(NgModel) model: NgModel;
 
-    constructor(wcs: WebContentSvc, controlService: ControlSubscribers, cd:ChangeDetectorRef) {
-      super(controlService,wcs,cd);
+    constructor(wcs: WebContentSvc, controlService: ControlSubscribers, cd:ChangeDetectorRef, store: Store<AppState>) {
+      super(controlService,wcs,cd, store);
     }
 
 }

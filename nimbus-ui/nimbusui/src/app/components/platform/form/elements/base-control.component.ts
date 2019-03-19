@@ -28,6 +28,9 @@ import { ValidationConstraint } from './../../../../shared/validationconstraints
 import { Subscription } from 'rxjs';
 import { ControlSubscribers } from './../../../../services/control-subscribers.service';
 import { ParamUtils } from './../../../../shared/param-utils';
+import { Store } from '@ngrx/store';
+import { AppState } from './../../../../reducers';
+import { LoadControlValueChanged } from './../../../../actions';
 
 /**
  * \@author Dinakar.Meda
@@ -52,7 +55,11 @@ export abstract class BaseControl<T> extends BaseControlValueAccessor<T> {
     validationChangeSubscriber: Subscription;
     onChangeSubscriber: Subscription;
 
-    constructor(protected controlService: ControlSubscribers, private wcs: WebContentSvc, private cd: ChangeDetectorRef) {
+    constructor(
+        protected controlService: ControlSubscribers, 
+        private wcs: WebContentSvc, 
+        private cd: ChangeDetectorRef, 
+        private store: Store<AppState>) {
         super();
     }
 
@@ -69,7 +76,7 @@ export abstract class BaseControl<T> extends BaseControlValueAccessor<T> {
             this.inPlaceEditContext.value = formControl.value;
         }
         if(this.form == null || (this.form.controls[this.element.config.code]!= null && this.form.controls[this.element.config.code].valid)) {
-            this.controlService.controlValueChanged.emit(formControl.element);
+            this.store.dispatch(new LoadControlValueChanged({element: formControl.element}));
         }
             
     }

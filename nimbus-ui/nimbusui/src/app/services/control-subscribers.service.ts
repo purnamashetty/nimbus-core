@@ -24,6 +24,9 @@ import { GenericDomain } from './../model/generic-domain.model';
 import { Param } from './../shared/param-state';
 import { HttpMethod } from '../shared/command.enum';
 import { AbstractControl } from '@angular/forms/src/model';
+import { Store } from '@ngrx/store';
+import { AppState } from '../reducers';
+import { ResetControlValueChanged } from '../actions';
 
 /**
  * \@author Sandeep.Mantha
@@ -35,11 +38,9 @@ import { AbstractControl } from '@angular/forms/src/model';
 @Injectable()
 export class ControlSubscribers {
     
-    @Output() controlValueChanged =new EventEmitter();
-
     private previousLeafState: any;
 
-    constructor(private pageService: PageService) {
+    constructor(private pageService: PageService, private store: Store<AppState>) {
         
     }
 
@@ -122,16 +123,21 @@ export class ControlSubscribers {
     }
 
     public onChangeEventSubscriber(control:BaseControl<any>) {
-        this.controlValueChanged.subscribe(($event) => {
-            //old leafState is used to post data to the server only when the user has changed the value
-            if ($event.config.uiStyles.attributes.postEventOnChange && ($event.leafState == null || 
-                            this.previousLeafState !== $event.leafState)) {
-                this.pageService.postOnChange($event.path, 'state', JSON.stringify($event.leafState));
-            } else if($event.config.uiStyles.attributes.postButtonUrl) {
-                let item: GenericDomain = new GenericDomain();
-                this.pageService.processEvent(control.element.config.uiStyles.attributes.postButtonUrl, null, $event.leafState, HttpMethod.POST.value);
-            }
-            this.previousLeafState = $event.leafState;
-        });
+        this.store.select(data => data['controlValueChanged$'])
+            .subscribe($event => {
+                if (!(Object.entries($event).length === 0 && $event.constructor === Object)) {
+                     //old leafState is used to post data to the server only when the user has changed the value
+                    if ($event.config.uiStyles.attributes.postEventOnChange && ($event.leafState == null ||
+                        this.previousLeafState !== $event.leafState)) {
+                        this.pageService.postOnChange($event.path, 'state', JSON.stringify($event.leafState));
+                    } else if ($event.config.uiStyles.attributes.postButtonUrl) {
+                        let item: GenericDomain = new GenericDomain();
+                        this.pageService.processEvent(control.element.config.uiStyles.attributes.postButtonUrl, null, $event.leafState, HttpMethod.POST.value);
+                    }
+                    this.previousLeafState = $event.leafState;
+                    this.store.dispatch(new ResetControlValueChanged());
+                }
+            });
     }
+
 }
