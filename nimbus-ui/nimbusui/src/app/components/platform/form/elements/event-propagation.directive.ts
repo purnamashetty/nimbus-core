@@ -58,14 +58,16 @@ import { ResetPostResponseProcessing } from './../../../../actions';
       );
 
       this.storeSubscription = this.store.subscribe((data) => {
-        const path = data['pageService']['postResponseProcessing$'];
-        if (path === this.path) {
-          if (this.form && this.form.valid) {
-            this.srcElement.removeAttribute('disabled');
-          } else {
-            this.srcElement.removeAttribute('disabled');
+        if (data['pageService'] && this.srcElement) {
+          const path = data['pageService']['postResponseProcessing$'];
+          if (path === this.path) {
+            if (this.form && this.form.valid) {
+              this.srcElement.removeAttribute('disabled');
+            } else {
+              this.srcElement.removeAttribute('disabled');
+            }
+            this.store.dispatch(new ResetPostResponseProcessing());
           }
-          this.store.dispatch(new ResetPostResponseProcessing());
         }
       });
     }

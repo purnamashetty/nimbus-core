@@ -52,8 +52,9 @@ constructor(private loaderService: LoaderService, private store: Store<AppState>
 ngOnInit() { 
 
             this.storeSubscription = this.store.subscribe((data) => {
-                console.log('loader is working from store');
+                if (data['loaderUpdate$']) {
                     this.show = data['loaderUpdate$']['show']; 
+                }
             });
     }
 
