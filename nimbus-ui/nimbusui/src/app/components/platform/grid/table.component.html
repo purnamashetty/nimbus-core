@@ -1,4 +1,4 @@
-<div class="buttonGroup right clearfix" *ngIf="element.config?.uiStyles?.attributes?.addRow">
+<div class="buttonGroup tableHeaderButton clearfix" *ngIf="element.config?.uiStyles?.attributes?.addRow">
     <button class="btn-plain fa fa-plus" (click)="addRow()">
         <span class="pl-2">add row</span>
     </button>
@@ -107,10 +107,23 @@
                             <p-cellEditor>
 
                                      <ng-template pTemplate="input">
-                                        <input [title]="rowData[col.code]" *ngIf="showValue(col)" [value]="rowData[col.code]" pInputText type="text" [(ngModel)]="rowData[col.code]" [name]="col.code" required>
+                                         
+                                        <input [title]="rowData[col.code]" *ngIf="showValue(col) && !col?.type?.nested" [value]="rowData[col.code]" pInputText type="text" [(ngModel)]="rowData[col.code]" [name]="col.code" required>
                                         <input *ngIf="col?.uiStyles?.attributes?.alias == viewComponent.link.toString()" pInputText type="text" [(ngModel)]="rowData[col.code]" [name]="col.code" required>
                                         <input *ngIf="col?.uiStyles?.attributes?.alias == viewComponent.gridcolumn.toString() && col?.uiStyles?.attributes?.showAsLink === true" pInputText type="text" [(ngModel)]="rowData[col.code]" [name]="col.code" required>
                                         <input *ngIf="col?.uiStyles?.attributes?.alias == viewComponent.button.toString()" pInputText type="text" [(ngModel)]="rowData[col.code]" [name]="col.code" required>
+                                        
+                                        <!-- <p-dropdown *ngIf="showValue(col) && col?.type?.nested" 
+                                        [options]="element.collectionParams[0].type.model.params[0].values" 
+                                        optionLabel="label" dataKey="code" 
+                                        [(ngModel)]="editDd"></p-dropdown> -->
+
+                                        <p-dropdown *ngIf="showValue(col) && col?.type?.nested" 
+                                        [options]="element.collectionParams[0].type.model.params[0].values | selectItemPipe" 
+                                        [(ngModel)]="rowData[col.code][col.type.model.paramConfigs[0].code]" (onChange)="getCol($event)"></p-dropdown>
+                                        
+                                        rowData[col.type.model.paramConfigs[0].code]: {{rowData[col.code][col.type.model.paramConfigs[0].code]}}
+
                                     </ng-template>
 
                                     <ng-template pTemplate="output">

@@ -1,4 +1,4 @@
-import { ViewComponent } from "../../../shared/param-annotations.enum";
+import { ViewComponent, ComponentTypes } from "../../../shared/param-annotations.enum";
 
 /**
  * @license
@@ -32,5 +32,10 @@ export class TableComponentConstants {
                                                             ViewComponent.link.toString(),
                                                             ViewComponent.linkMenu.toString(),
                                                             ViewComponent.gridRowBody.toString() ];
+
+    public static readonly allowedColumnStylesAlias1: string[] = [ 
+        ComponentTypes.comboBox.toString(),
+        ComponentTypes.textBox.toString()
+    ];
 }
 

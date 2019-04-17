@@ -66,4 +66,11 @@ export class ComboBox extends BaseControl<String> {
         super(controlService,wcs,cd);
     }
 
+    ngOnInit() {
+      console.log('this.element...combobox', this.element);
+      this.value = 'No';
+      console.log('this.value...combobox', this.value);
+
+    }
+
 }

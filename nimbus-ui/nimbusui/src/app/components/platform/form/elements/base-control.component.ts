@@ -65,6 +65,8 @@ export abstract class BaseControl<T> extends BaseControlValueAccessor<T> {
     }
 
     emitValueChangedEvent(formControl:any,$event:any) {
+        console.log('this.value....combobox change:', this.value);
+        
         if (this.inPlaceEditContext) {
             this.inPlaceEditContext.value = formControl.value;
         }

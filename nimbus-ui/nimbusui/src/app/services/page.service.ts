@@ -273,6 +273,9 @@ export class PageService {
         }
 
         getFlowNameFromOutput(paramPath: string): string {
+                // if (paramPath === '/ownerlandingview/vpOwners/vtOwners/vsOwners/owners') {
+                //         return 'ownerlandingview/vpOwners/vtOwners/vsOwners/owners';
+                // }
                 if(paramPath == undefined) {
                         return '';
                 }
@@ -669,6 +672,18 @@ export class PageService {
 
                 if (gridElementParams) {
                         gridElementParams.forEach(param => {
+//---------------
+                                // const nParams = param.type.model.params;
+                                //         for (let i = 0; i < nParams.length; i++) {
+                                //                 if (nParams[i].type && nParams[i].type.model && nParams[i].type.model.params.length > 0) {
+                                //                         const nestedParam = new Param(this.configService).deserialize(nParams[i].type.model.params[0], gridParam.path);
+                                //                         console.log('nestedParam...combobox', nestedParam);
+                                //                         if (nestedParam.alias === 'ComboBox') {
+                                //                                 collectionParams.push(nestedParam);
+                                //                         }
+                                //                 }
+                                //         }
+
                                 let p = new Param(this.configService).deserialize(param, gridParam.path);
                                 if (p != null) {
                                         // build the gridList data
@@ -720,7 +735,7 @@ export class PageService {
                                                         param.gridData = this.createGridData(eventModel.value.type.model.params, param);
                                                 } else {
                                                         param.gridData.leafState.push(this.createGridData(eventModel.value.type.model.params, param).leafState);
-                                                }
+                                                }                                                
                                                 this.gridValueUpdate.next(param);
                                         }
                                         // Collection check - replace entire grid

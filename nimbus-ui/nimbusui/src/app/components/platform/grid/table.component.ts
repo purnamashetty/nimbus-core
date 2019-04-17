@@ -35,7 +35,7 @@ import { PageService } from '../../../services/page.service';
 import { GridService } from '../../../services/grid.service';
 import { ServiceConstants } from './../../../services/service.constants';
 import { SortAs, GridColumnDataType } from './sortas.interface';
-import { Param, StyleState } from '../../../shared/param-state';
+import { Param, StyleState, Values } from '../../../shared/param-state';
 import { HttpMethod } from './../../../shared/command.enum';
 import { TableComponentConstants } from './table.component.constants';
 import { ViewComponent, ComponentTypes } from '../../../shared/param-annotations.enum';
@@ -100,6 +100,9 @@ export class DataTable extends BaseTableElement implements ControlValueAccessor 
     id: String = 'grid-control' + counter++;
     gridRowConfig: any[];
     clonedRowData: any[] = [];
+    editDd: any;
+    data1 = 'No'
+    // = { label: 'No', code: 'No'};
 
     get value() {
         return this._value;
@@ -139,13 +142,51 @@ export class DataTable extends BaseTableElement implements ControlValueAccessor 
     }
 
     onRowEditInitialize(rowData) {
+
+        // if (this.element.collectionParams.length > 0) {
+        //     for (const param of this.element.collectionParams) {
+        //         if (param.alias === 'GridColumn') {
+        //             for (const nParam of param) {
+        //                 if (nParam.alias === 'ComboBox') {
+
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
+
+
+    //    this.editDd =  null;
+    //    //values .. find the one which should be reset herer  .
+    //    var values = this.element.collectionParams[0].type.model.params[0].values;
+    //    var defa = rowData.telephone.qtelephone;
+
+    //    for (let i = 0; i<values.length; i++){
+    //        if (values[i].code === defa){
+    //            this.editDd = values [i];
+    //        }
+    //    }
         this.clonedRowData[rowData.id] = {...rowData};
+    }
+
+    getCol(event) {
+        console.log('event', event, this.data1);
+        
+        // this.data1 =  {
+        //     code: rowData[col.code][col.type.model.paramConfigs[0].code],
+        //     label: rowData[col.code][col.type.model.paramConfigs[0].code]
+        // };
+        // return this.data1;
     }
 
     onRowEditSave(rowData) {
         // make a server call to updated rowdata and if elemId as -1 then it need to update grid data in serverside
         // recieve the updated id and elemId and the current rowdata
+        // rowData.telephone.qtelephone = this.editDd.code;
+        console.log('rowData...saved', rowData);
+        
         this.dt.saveRowEdit(rowData, this.editableRow.nativeElement);
+        // this.cd.detectChanges();
         delete this.clonedRowData[rowData.id];
     }
 
@@ -232,6 +273,7 @@ export class DataTable extends BaseTableElement implements ControlValueAccessor 
             this.dt.filterConstraints = customFilterConstraints;
         }
         this.updatePosition();
+        console.log('this.params', this.params);
     }
 
     ngAfterViewInit() {
@@ -319,11 +361,21 @@ export class DataTable extends BaseTableElement implements ControlValueAccessor 
     }
 
     getCellDisplayValue(rowData: any, col: ParamConfig) {
-        let cellData = rowData[col.code];
+        console.log('rowData', rowData);
+        console.log('col', col);
+
+        const cellData = rowData[col.code];
         if (cellData) {
             if (super.isDate(col.type.name)) {
                 return this.dtFormat.transform(cellData, col.uiStyles.attributes.datePattern, col.type.name);
             } else {
+                // if (typeof cellData === 'object' && col.type) {
+                //     for (const key in cellData) {
+                //         if (cellData.hasOwnProperty(key)) {
+                //             return cellData[key];
+                //         }
+                //     }
+                // }
                 return cellData;
             }
         } else {
@@ -356,7 +408,7 @@ export class DataTable extends BaseTableElement implements ControlValueAccessor 
         let showValue = false;
         if (col.uiStyles && col.uiStyles.attributes ) {
             if (!TableComponentConstants.allowedColumnStylesAlias.includes(col.uiStyles.attributes.alias)) {
-                if (col.uiStyles.attributes.alias === ViewComponent.gridcolumn.toString()) {
+                if (col.uiStyles.attributes.alias === ViewComponent.gridcolumn.toString() || TableComponentConstants.allowedColumnStylesAlias1.includes(col.uiStyles.attributes.alias)) {
                     if (col.uiStyles.attributes.showAsLink !== true) {
                         showValue = true;
                     }

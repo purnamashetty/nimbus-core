@@ -75,6 +75,8 @@ export class PageContent extends BaseElement{
         this._logger.debug('PageContent - i ' + this.pageId);
         this.route.data.subscribe((data: { page: Param }) => {
             let page : Param = data.page;
+            console.log('page-content----', page.type.model.params[0].type.model.params[0].type.model.params[0]);
+            
             this.element = page;
             this.tilesList = [];
             if(page.type.model != null) {

@@ -81,6 +81,9 @@ export class Param implements Serializable<Param, string> {
                     let config = this.configSvc.paramConfigs[p.configId];
 
                     this.handleNestedGridParams(rowData, param, p, config);
+                    if (config.uiStyles.attributes.alias === 'GridColumn' && config.type.nested) {
+                        this.putNestedGridParam(rowData, param, p);
+                    }
                     if (isTreeGrid && config.uiStyles && config.uiStyles.attributes.alias === ViewComponent.treeGridChild.toString()) {
                         this.putNestedGridParam(rowData, param, p);
                         this.handleRecursiveNestedGridParams(rowData, param, p);

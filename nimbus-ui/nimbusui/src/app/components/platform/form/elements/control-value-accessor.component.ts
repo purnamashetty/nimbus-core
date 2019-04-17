@@ -40,6 +40,8 @@ export class BaseControlValueAccessor<T> implements ControlValueAccessor {
 
   set value(value: T) {
     if (this.innerValue !== value) {
+      console.log('updated value', value);
+      
       this.innerValue = value;
       this.changed.forEach(f => f(value));
     }
